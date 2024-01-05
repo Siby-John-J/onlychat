@@ -1,0 +1,135 @@
+
+.mainSettings {
+    height: 100%;
+    width: 100%;
+    color: white;
+    background-color: rgb(45, 45, 45);
+    font-family: sans-serif;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.p1 {
+    /* background-color: rgb(81, 81, 0); */
+}
+
+.mainSettings .sts {
+    margin-bottom: 16em;
+}
+
+.mainSettings .names {
+    /* background-color: green; */
+    height: 8em;
+    width: 28.5em;
+    /* margin-left: 7em; */
+    font-family: sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-evenly;
+}
+
+.names input {
+    outline: none;
+    border: none;
+    height: 2em;
+    border-radius: 6px;
+    width: 20em;
+}
+
+.mainSettings .email {
+    /* background-color: rebeccapurple; */
+    height: 4em;
+    /* margin-left: 7em; */
+    width: 28.5em;
+    font-family: sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.email input {
+    outline: none;
+    border: none;
+    height: 2em;
+    border-radius: 6px;
+    width: 20em;
+}
+
+.mainSettings  .cp-btn {
+    margin-left: 6.5em;
+    padding: 0.3em 0.9em;
+    font-size: 1.3em;
+    border: none;
+    border-radius: 3px;
+    /* margin: 1em 0em; */
+}
+
+.mainSettings .change-password {
+    width: 28.5em;
+    height: 10em;
+    /* background-color: violet; */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
+    /* margin-left: 7em; */
+    font-family: sans-serif;
+    margin-top: 1em;
+}
+
+.change-password input {
+    outline: none;
+    border: none;
+    height: 2em;
+    border-radius: 6px;
+    width: 20em;
+}
+
+.change-password button {
+    padding: 0.3em 0.9em;
+    font-size: 1.3em;
+    border: none;
+    border-radius: 3px;
+}
+
+.mainSettings .p2, .userslist {
+    border: 1px solid white;
+    height: 23em;
+    width: 16em;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    /* justify-content: space-around */
+}
+
+.userslist .usersTitle {
+    margin-left: 2em;
+}
+
+.userslist .datas {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    /* background-color: rgb(128, 0, 255); */
+    height: 90%;
+}
+
+.userslist .user {
+    background-color: rgb(255, 255, 255);
+    width: 90%;
+    height: 50px;
+    border-radius: 3px;
+    margin-top: 9px;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+}
+
+.user .image {
+    background-color: blue;
+    height: 32px;
+    width: 32px;
+    border-radius: 60%;
+}
