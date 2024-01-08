@@ -14,12 +14,10 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.AnotherController = void 0;
 const common_1 = require("@nestjs/common");
-const another_service_1 = require("../usecase/another/another.service");
-const domain_1 = require("../domain");
-const jwt_guard_1 = require("./guards/jwt.guard");
+const domain_1 = require("../../domain");
+const guards_1 = require("../guards");
 let AnotherController = class AnotherController {
-    constructor(another, jwt) {
-        this.another = another;
+    constructor(jwt) {
         this.jwt = jwt;
         this.refreshList = [];
     }
@@ -29,12 +27,11 @@ let AnotherController = class AnotherController {
         this.refreshList.push(refresh);
         res.cookie('Berer', token);
         return {
-            'access': token,
-            'refresh': refresh
+            access: token,
+            refresh: refresh,
         };
     }
     signInUSer(data) {
-        console.log(data);
         return 'get it';
     }
     chatUser() {
@@ -43,12 +40,6 @@ let AnotherController = class AnotherController {
     refreshToken(data, res) {
         res.clearCookie('Berer');
         if (this.refreshList.includes(data['token'])) {
-            const new_token = this.jwt.verifyToken(data['token']);
-            const access_token = this.jwt.signToken({
-                email: new_token['email'],
-                password: new_token['password']
-            });
-            res.cookie('Berer', access_token);
         }
     }
 };
@@ -69,7 +60,7 @@ __decorate([
     __metadata("design:returntype", String)
 ], AnotherController.prototype, "signInUSer", null);
 __decorate([
-    (0, common_1.UseGuards)(jwt_guard_1.JwtGuard),
+    (0, common_1.UseGuards)(guards_1.JwtGuard),
     (0, common_1.Get)('chat'),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),
@@ -85,7 +76,6 @@ __decorate([
 ], AnotherController.prototype, "refreshToken", null);
 exports.AnotherController = AnotherController = __decorate([
     (0, common_1.Controller)('user'),
-    __metadata("design:paramtypes", [another_service_1.AnotherService,
-        domain_1.jwtAbstract])
+    __metadata("design:paramtypes", [domain_1.jwtAbstract])
 ], AnotherController);
 //# sourceMappingURL=user.controller.js.map

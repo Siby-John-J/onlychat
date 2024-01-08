@@ -3,7 +3,6 @@ import { MainGateWayAbstract } from 'src/domain/abstracts';
 
 @Injectable()
 export class GatewayService {
-    // private gateway: MainGateWayAbstract
     constructor(private gateway: MainGateWayAbstract) {}
 
     get(value: string): any {

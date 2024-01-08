@@ -9,17 +9,15 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.AnotherModule = void 0;
 const common_1 = require("@nestjs/common");
 const another_service_1 = require("./another.service");
-const user_controller_1 = require("../../controller/user.controller");
-const jwt_module_1 = require("../../framework/jwt/jwt.module");
+const mongo_module_1 = require("../../framework/mongo/mongo.module");
 let AnotherModule = class AnotherModule {
 };
 exports.AnotherModule = AnotherModule;
 exports.AnotherModule = AnotherModule = __decorate([
     (0, common_1.Module)({
-        imports: [jwt_module_1.AuthJwtModule],
-        controllers: [user_controller_1.AnotherController],
+        imports: [mongo_module_1.MongoModule],
         providers: [another_service_1.AnotherService],
-        exports: [],
+        exports: [another_service_1.AnotherService],
     })
 ], AnotherModule);
 //# sourceMappingURL=another.module.js.map

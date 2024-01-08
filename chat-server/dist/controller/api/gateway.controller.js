@@ -11,13 +11,8 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.GatewayController = void 0;
 const common_1 = require("@nestjs/common");
-const gateway_service_1 = require("../usecase/gateway/gateway.service");
 let GatewayController = class GatewayController {
-    constructor(gateway) {
-        this.gateway = gateway;
-    }
     getGate() {
-        return this.gateway.get('vaueshits');
     }
 };
 exports.GatewayController = GatewayController;
@@ -28,7 +23,6 @@ __decorate([
     __metadata("design:returntype", Object)
 ], GatewayController.prototype, "getGate", null);
 exports.GatewayController = GatewayController = __decorate([
-    (0, common_1.Controller)('gateway'),
-    __metadata("design:paramtypes", [gateway_service_1.GatewayService])
+    (0, common_1.Controller)('gateway')
 ], GatewayController);
 //# sourceMappingURL=gateway.controller.js.map

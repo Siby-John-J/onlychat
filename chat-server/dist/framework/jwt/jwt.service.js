@@ -17,16 +17,16 @@ let jwtAuth = class jwtAuth {
         this.jwt = jwt;
     }
     signToken(data) {
-        const val = this.jwt.sign(data, { expiresIn: '8s' });
+        const val = this.jwt.sign(data, { expiresIn: '8s', secret: process.env.ACCESS_TOKEN_SECRET });
         return val;
     }
     refreshToken(data) {
-        const val = this.jwt.sign(data);
+        const val = this.jwt.sign(data, { secret: process.env.REFRESH_TOKEN_SECREAT });
         return val;
     }
     verifyToken(token) {
         const val = this.jwt.verify(token, {
-            secret: 'random'
+            secret: process.env.ACCESS_TOKEN_SECRET
         });
         return val;
     }

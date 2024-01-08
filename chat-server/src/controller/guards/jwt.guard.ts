@@ -17,13 +17,10 @@ export class JwtGuard implements CanActivate {
             console.log(error.message)
         }
         
-        
         return true
     }
 
     extractToken(request: Request) {
-        // return request.headers.authorization.split(' ')[0]
-        console.log(request.cookies)
         return request.cookies['Berer']
     }
 }

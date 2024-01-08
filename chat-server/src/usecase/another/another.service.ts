@@ -1,13 +1,12 @@
 import { Injectable } from '@nestjs/common';
-import { anotherAbstract } from 'src/domain/abstracts';
+import { UserDto } from 'src/domain';
+import { UserRepoAbstract } from 'src/domain';
 
 @Injectable()
-export class AnotherService extends anotherAbstract {
-    get() {
-        return 'string'
-    }
+export class AnotherService {
+    constructor(private userrepo: UserRepoAbstract<UserDto>) {}
 
-    post() {
-        return 'string'
+    createUser() {
+        this.userrepo.createUser()
     }
 }

@@ -1,15 +1,13 @@
 import { Module } from '@nestjs/common';
 import { AnotherService } from './another.service';
-import { AnotherController } from 'src/controller/user.controller';
-import { anotherAbstract } from 'src/domain/abstracts';
-import { JwtModule } from '@nestjs/jwt';
-import { jwtAuth } from 'src/framework/jwt/jwt.service';
+import { AnotherController } from 'src/controller';
 import { AuthJwtModule } from 'src/framework/jwt/jwt.module';
+import { MongoModule } from 'src/framework/mongo/mongo.module';
 
 @Module({
-  imports: [AuthJwtModule],
-  controllers: [AnotherController],
+  imports: [MongoModule],
+  // controllers: [AnotherController],
   providers: [AnotherService],
-  exports: [],
+  exports: [AnotherService],
 })
 export class AnotherModule {}

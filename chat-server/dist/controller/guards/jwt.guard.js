@@ -28,7 +28,6 @@ let JwtGuard = class JwtGuard {
         return true;
     }
     extractToken(request) {
-        console.log(request.cookies);
         return request.cookies['Berer'];
     }
 };

@@ -10,7 +10,7 @@ exports.GatewayModule = void 0;
 const common_1 = require("@nestjs/common");
 const gateway_service_1 = require("./gateway.service");
 const gateway_module_1 = require("../../framework/gateway/gateway.module");
-const gateway_controller_1 = require("../../controller/gateway.controller");
+const gateway_controller_1 = require("../../controller/api/gateway.controller");
 let GatewayModule = class GatewayModule {
 };
 exports.GatewayModule = GatewayModule;
@@ -19,7 +19,7 @@ exports.GatewayModule = GatewayModule = __decorate([
         imports: [gateway_module_1.GatewayFrameWorkModule],
         controllers: [gateway_controller_1.GatewayController],
         providers: [gateway_service_1.GatewayService],
-        exports: [gateway_service_1.GatewayService]
+        exports: [gateway_service_1.GatewayService],
     })
 ], GatewayModule);
 //# sourceMappingURL=gateway.module.js.map

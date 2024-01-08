@@ -17,4 +17,5 @@ Object.defineProperty(exports, "__esModule", { value: true });
 __exportStar(require("./another.abstract"), exports);
 __exportStar(require("./gateway.abstrat"), exports);
 __exportStar(require("./jwt.abstract"), exports);
+__exportStar(require("./userrepo.abstract"), exports);
 //# sourceMappingURL=index.js.map
