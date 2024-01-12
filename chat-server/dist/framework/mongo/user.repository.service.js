@@ -33,7 +33,17 @@ let UserRepo = class UserRepo {
     }
     editUser() {
     }
-    getUser() {
+    async getUser(data) {
+        if (typeof data === 'string') {
+            const user = await this.userModel.findOne({ id: data });
+            return user;
+        }
+        const { email, password } = data;
+        const user = await this.userModel.findOne({
+            email: email,
+            password: password
+        });
+        return user;
     }
 };
 exports.UserRepo = UserRepo;

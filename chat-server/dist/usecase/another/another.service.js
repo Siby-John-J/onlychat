@@ -19,6 +19,12 @@ let AnotherService = class AnotherService {
     createUser() {
         this.userrepo.createUser();
     }
+    signUpUser(data) {
+        return this.userrepo.getUser(data);
+    }
+    getUser(id) {
+        return this.userrepo.getUser(id);
+    }
 };
 exports.AnotherService = AnotherService;
 exports.AnotherService = AnotherService = __decorate([

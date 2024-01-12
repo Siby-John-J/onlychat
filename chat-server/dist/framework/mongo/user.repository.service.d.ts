@@ -30,5 +30,5 @@ export declare class UserRepo<T> implements UserRepoAbstract<T> {
     createUser(): Promise<void>;
     deleteUser(): void;
     editUser(): void;
-    getUser(): void;
+    getUser(data: any): Promise<null | object>;
 }

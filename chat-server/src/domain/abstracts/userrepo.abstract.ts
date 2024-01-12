@@ -6,5 +6,5 @@ export abstract class UserRepoAbstract<T> {
 
     abstract deleteUser()
 
-    abstract getUser()
+    abstract getUser(data: object | string) : Promise<null | object>
 }

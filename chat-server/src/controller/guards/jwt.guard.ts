@@ -15,6 +15,7 @@ export class JwtGuard implements CanActivate {
             const payload = this.jwt.verifyToken(token)
         } catch (error) {
             console.log(error.message)
+            return false
         }
         
         return true

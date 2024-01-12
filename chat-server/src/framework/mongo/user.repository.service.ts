@@ -1,5 +1,5 @@
 import { InjectModel } from "@nestjs/mongoose";
-import { UserDto, UserRepoAbstract } from "src/domain";
+import { UserRepoAbstract } from "src/domain";
 import { Model } from 'mongoose'
 import { Injectable } from "@nestjs/common";
 
@@ -25,7 +25,20 @@ export class UserRepo<T> implements UserRepoAbstract<T> {
         
     }
 
-    getUser() {
-        
+    async getUser(data: any) : Promise<null | object> {
+
+        if(typeof data === 'string') {
+            const user = await this.userModel.findOne({id: data})
+            return user
+        }
+
+        const { email, password } = data
+
+        const user = await this.userModel.findOne({
+            email: email,
+            password: password
+        })
+
+        return user
     }
 }

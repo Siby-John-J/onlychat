@@ -4,4 +4,6 @@ export declare class AnotherService {
     private userrepo;
     constructor(userrepo: UserRepoAbstract<UserDto>);
     createUser(): void;
+    signUpUser(data: object): any;
+    getUser(id: string): Promise<object>;
 }

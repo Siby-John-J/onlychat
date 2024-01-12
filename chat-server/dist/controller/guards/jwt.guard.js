@@ -24,6 +24,7 @@ let JwtGuard = class JwtGuard {
         }
         catch (error) {
             console.log(error.message);
+            return false;
         }
         return true;
     }

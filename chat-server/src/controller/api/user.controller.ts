@@ -11,6 +11,7 @@ import {
 import { UserDto, UserAuthDto, jwtAbstract } from 'src/domain';
 import { JwtGuard } from '../guards';
 import { Response, Request } from 'express';
+import { AnotherService } from 'src/usecase/another/another.service';
 
 @Controller('user')
 export class AnotherController {
@@ -18,7 +19,7 @@ export class AnotherController {
 
   constructor(
     private jwt: jwtAbstract,
-    // private user: UserService
+    private user: AnotherService
   ) {}
 
   @Post('create')
@@ -30,6 +31,9 @@ export class AnotherController {
     const refresh = this.jwt.refreshToken(body);
     this.refreshList.push(refresh);
 
+    console.log(body)
+    // this.user.createUser()
+
     res.cookie('Berer', token);
     return {
       access: token,
@@ -38,9 +42,21 @@ export class AnotherController {
   }
 
   @Get('signin')
-  signInUSer(@Query() data: UserAuthDto): string {
+  async signInUSer(@Query() data: UserAuthDto): Promise<boolean | string> {
+    const res = await this.user.signUpUser(data)
 
-    return 'get it';
+    if(res !== null) {
+      return res.id
+    }
+    
+    return false
+  }
+
+  @Get('get_user')
+  async getUser(@Query() id: any) {
+    const res = await this.user.getUser(id.id)
+
+    return res
   }
 
   @UseGuards(JwtGuard)

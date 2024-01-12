@@ -9,4 +9,12 @@ export class AnotherService {
     createUser() {
         this.userrepo.createUser()
     }
+
+    signUpUser(data: object) : any {
+        return this.userrepo.getUser(data)
+    }
+
+    getUser(id: string) {
+        return this.userrepo.getUser(id)
+    }
 }

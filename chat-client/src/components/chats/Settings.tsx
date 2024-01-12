@@ -14,7 +14,7 @@ function Settings() {
             <label htmlFor="">lastname</label>
             <input type="text" />
           </div>
-
+          
           <div className="email">
             <label htmlFor="">Email</label>
             <input type="text" />

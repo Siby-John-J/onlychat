@@ -39,12 +39,17 @@ export default function SignIn() {
             </div>
             <div className="btn-session">
                 <button id="cancel">cancel</button>
-                <button onClick={() => {
+                <button onClick={async() => {
                     if(email !== '' && password !== '') {
-                        useAuthFetch({
+                        const res = await useAuthFetch({
                             email: email,
                             password: password
                         })
+
+                        if(res !== false) {
+                            console.log(res)
+                            window.location.href = `/chat?id=${res}`
+                        }
                     }
                 }}>
                     {/* <Link className="linked" to="/chat">

@@ -1,11 +1,26 @@
+import { useSearchParams } from 'react-router-dom'
 import Icon from '../../assets/icon.png'
 import VideoChat from '../../assets/video-chat-icon.svg'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
+import { useFetchUser } from '../../hooks/useFetch'
 
 function Chats() {
     const [shift, Unshift] = useState(false)
     const [cModel, setcModel] = useState(false)
+
+    const [params, setParams] = useSearchParams()
+
+    const [name, setName] = useState('')
     
+    useEffect(() => {
+        async function getUser() {
+            const id = params.get('id')
+            const result = await useFetchUser(id)
+            setName(result.firstname + ' ' + result.lastname)
+        }
+
+        getUser()
+    }, [])
     
     const handleModel = () => {
         Unshift(!shift)
@@ -28,7 +43,7 @@ function Chats() {
                         
                     </div>
                     <div className="texts-sel">
-                        <label className='name' htmlFor="">Siby John</label>
+                        <label className='name' htmlFor="">{'name'}</label>
                         <label className='last-msg' htmlFor="">Last message is this</label>
                     </div>
                 </div>
@@ -38,7 +53,7 @@ function Chats() {
                     <div className="images">
                     </div>
                     <div className="texts-sel">
-                        <label className='name' htmlFor="">Siby John</label>
+                        <label className='name' htmlFor="">{name}</label>
                     </div>
                     <img onClick={handleModel} className='dots' src={Icon} alt="" />
                     <img onClick={createCall} className='vid' src={VideoChat} alt="" />
