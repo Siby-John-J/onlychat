@@ -16,9 +16,6 @@ let UserService = class UserService {
     constructor(userrepo) {
         this.userrepo = userrepo;
     }
-    createUser() {
-        this.userrepo.createUser();
-    }
 };
 exports.UserService = UserService;
 exports.UserService = UserService = __decorate([

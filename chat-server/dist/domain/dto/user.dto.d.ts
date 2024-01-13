@@ -1,5 +1,5 @@
 export interface UserDto {
-    id: string;
+    id?: string;
     firstname: string;
     lastname: string;
     email: string;
@@ -8,4 +8,8 @@ export interface UserDto {
 export interface UserAuthDto {
     email: string;
     password: string;
+}
+export interface AddChat {
+    myId: string;
+    id: string;
 }

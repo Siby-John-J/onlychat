@@ -6,9 +6,14 @@ export declare class AnotherController {
     private user;
     private refreshList;
     constructor(jwt: jwtAbstract, user: AnotherService);
-    getAnother(body: UserDto, res: Response): object;
+    getAnother(body: UserDto, res: Response): Promise<any>;
     signInUSer(data: UserAuthDto): Promise<boolean | string>;
     getUser(id: any): Promise<object>;
-    chatUser(): string;
+    getAllUsers(): Promise<UserDto>;
+    editUser(data: UserDto): Promise<void>;
+    addToChat(data: any): Promise<void>;
+    getChat(): Promise<void>;
+    getUserChat(id: any): Promise<any>;
+    chatUser(data: object): string;
     refreshToken(data: object, res: Response): void;
 }

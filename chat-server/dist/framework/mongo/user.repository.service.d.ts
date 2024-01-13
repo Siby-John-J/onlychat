@@ -22,13 +22,16 @@
 /// <reference types="mongoose/types/validation" />
 /// <reference types="mongoose/types/virtuals" />
 /// <reference types="mongoose/types/inferschematype" />
-import { UserRepoAbstract } from "src/domain";
+import { AddChat, UserDto, UserRepoAbstract } from "src/domain";
 import { Model } from 'mongoose';
 export declare class UserRepo<T> implements UserRepoAbstract<T> {
     private userModel;
     constructor(userModel: Model<T>);
-    createUser(): Promise<void>;
+    createUser(data: UserDto): Promise<void>;
     deleteUser(): void;
-    editUser(): void;
+    editUser(data: UserDto): Promise<void>;
     getUser(data: any): Promise<null | object>;
+    getAll(): Promise<any>;
+    addUserToChat(data: AddChat): Promise<"removed" | "added">;
+    getChatDetails(data: object): Promise<import("mongoose").IfAny<T, any, import("mongoose").Document<unknown, {}, T> & import("mongoose").Require_id<T>>[]>;
 }

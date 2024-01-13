@@ -8,17 +8,29 @@ import { userContext } from "./context/userContext";
 
 function App() {
     const [isLogin, SetisLogin] = useState(true);
-    const [username, setUsername] = useState('')
+    const [firstname, setFirstname] = useState('')
+    const [lastname, setLastname] = useState('')
     const [password, setPassword] = useState('')
+    const [email, setEmail] = useState('')
+    const [id, setId] = useState('')
+    const [chats, setChat] = useState('')
 
     return (
         <>
             <authContext.Provider value={{ isLogin, SetisLogin }}>
                 <userContext.Provider value={{
-                    username,
-                    setUsername,
+                    firstname,
+                    lastname,
+                    setFirstname,
+                    setLastname,
+                    email,
+                    setEmail,
                     password,
-                    setPassword
+                    setPassword,
+                    id,
+                    setId,
+                    chats,
+                    setChat
                 }}>
                     <Routes>
                         <Route path="/" Component={Auth} />

@@ -18,8 +18,6 @@ const socket_io_1 = require("socket.io");
 let MainGateWay = class MainGateWay {
     onModuleInit() {
         this.server.on('connection', (socket) => {
-            console.log(socket.id);
-            socket.join('room1');
         });
     }
     onnewMessage(body) {
@@ -32,7 +30,7 @@ __decorate([
     __metadata("design:type", socket_io_1.Server)
 ], MainGateWay.prototype, "server", void 0);
 __decorate([
-    (0, websockets_1.SubscribeMessage)('new_message'),
+    (0, websockets_1.SubscribeMessage)('msg'),
     __param(0, (0, websockets_1.MessageBody)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object]),

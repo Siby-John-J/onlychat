@@ -16,22 +16,38 @@ exports.UserRepo = void 0;
 const mongoose_1 = require("@nestjs/mongoose");
 const mongoose_2 = require("mongoose");
 const common_1 = require("@nestjs/common");
+const crypto_1 = require("crypto");
 let UserRepo = class UserRepo {
     constructor(userModel) {
         this.userModel = userModel;
     }
-    async createUser() {
+    async createUser(data) {
         await this.userModel.create({
-            id: 'burh',
-            firstname: 'lwal',
-            lastname: 'memes',
-            email: 'email@gmail',
-            password: 'dead'
+            id: (0, crypto_1.randomUUID)(),
+            firstname: data.firstname,
+            lastname: data.lastname,
+            email: data.email,
+            password: data.password
         });
     }
     deleteUser() {
     }
-    editUser() {
+    async editUser(data) {
+        if (data['password'] !== '') {
+            const dat = await this.userModel.updateOne({ id: data['id'] }, {
+                firstname: data.firstname,
+                lastname: data.lastname,
+                email: data.email,
+                password: data.password
+            });
+        }
+        else {
+            const dat = await this.userModel.updateOne({ id: data['id'] }, {
+                firstname: data.firstname,
+                lastname: data.lastname,
+                email: data.email,
+            });
+        }
     }
     async getUser(data) {
         if (typeof data === 'string') {
@@ -44,6 +60,42 @@ let UserRepo = class UserRepo {
             password: password
         });
         return user;
+    }
+    async getAll() {
+        const all_users = await this.userModel.find();
+        return all_users;
+    }
+    async addUserToChat(data) {
+        const { myId, id } = data;
+        const check_update = await this.userModel.findOne({ id: myId }, { _id: 0, chats: 1 });
+        const res = check_update['chats'].map(dat => {
+            if (dat.id === id) {
+                return true;
+            }
+        })[0];
+        if (res === true) {
+            const chat_remove = await this.userModel.updateOne({ id: myId }, {
+                $pull: {
+                    'chats': {
+                        "id": id
+                    }
+                }
+            });
+            return 'removed';
+        }
+        else {
+            const chat_update = await this.userModel.updateOne({ id: myId }, {
+                $push: { chats: {
+                        id: id,
+                        data: []
+                    } }
+            });
+            return 'added';
+        }
+    }
+    async getChatDetails(data) {
+        const chat_update = await this.userModel.find({ id: data });
+        return chat_update;
     }
 };
 exports.UserRepo = UserRepo;

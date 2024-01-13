@@ -16,14 +16,26 @@ let AnotherService = class AnotherService {
     constructor(userrepo) {
         this.userrepo = userrepo;
     }
-    createUser() {
-        this.userrepo.createUser();
+    createUser(data) {
+        return this.userrepo.createUser(data);
     }
     signUpUser(data) {
         return this.userrepo.getUser(data);
     }
     getUser(id) {
         return this.userrepo.getUser(id);
+    }
+    editUser(data) {
+        return this.userrepo.editUser(data);
+    }
+    getAllUsers() {
+        return this.userrepo.getAll();
+    }
+    addTochat(data) {
+        return this.userrepo.addUserToChat(data);
+    }
+    getChatDetails(data) {
+        return this.userrepo.getChatDetails(data);
     }
 };
 exports.AnotherService = AnotherService;

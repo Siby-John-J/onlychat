@@ -7,11 +7,13 @@ import { ConfigModule } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
 import { AnotherController } from './controller';
 import { AuthJwtModule } from './framework/jwt/jwt.module';
+import { GatewayModule } from './usecase/gateway/gateway.module';
 
 @Module({
   imports: [
     AnotherModule,
     AuthJwtModule,
+    GatewayFrameWorkModule,
     MongooseModule.forRoot('mongodb://127.0.0.1:27017/onlychat'),
     ConfigModule.forRoot({
       isGlobal: true,

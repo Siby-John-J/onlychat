@@ -5,7 +5,7 @@ import { UserDto, UserRepoAbstract } from 'src/domain';
 export class UserService {
     constructor(private userrepo: UserRepoAbstract<UserDto>) {}
 
-    createUser() {
-        this.userrepo.createUser()
-    }
+    // createUser() {
+    //     this.userrepo.createUser()
+    // }
 }

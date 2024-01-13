@@ -11,19 +11,28 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.GatewayService = void 0;
 const common_1 = require("@nestjs/common");
-const abstracts_1 = require("../../domain/abstracts");
+const websockets_1 = require("@nestjs/websockets");
+const socket_io_1 = require("socket.io");
 let GatewayService = class GatewayService {
-    constructor(gateway) {
-        this.gateway = gateway;
-    }
-    get(value) {
-        console.log('worked');
-        return this.gateway.onModuleInit();
+    onModuleInit() {
+        this.server.on('connection', (socket) => {
+            socket.on('msg', soc => {
+                console.log(soc, ' socket');
+            });
+        });
     }
 };
 exports.GatewayService = GatewayService;
+__decorate([
+    (0, websockets_1.WebSocketServer)(),
+    __metadata("design:type", socket_io_1.Server)
+], GatewayService.prototype, "server", void 0);
 exports.GatewayService = GatewayService = __decorate([
-    (0, common_1.Injectable)(),
-    __metadata("design:paramtypes", [abstracts_1.MainGateWayAbstract])
+    (0, websockets_1.WebSocketGateway)({
+        cors: {
+            origin: ['http://localhost:5173']
+        }
+    }),
+    (0, common_1.Injectable)()
 ], GatewayService);
 //# sourceMappingURL=gateway.service.js.map

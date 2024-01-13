@@ -2,7 +2,9 @@ import {
   Body,
   Controller,
   Get,
+  Patch,
   Post,
+  Put,
   Query,
   Req,
   Res,
@@ -23,22 +25,21 @@ export class AnotherController {
   ) {}
 
   @Post('create')
-  getAnother(
+  async getAnother(
     @Body() body: UserDto,
     @Res({ passthrough: true }) res: Response,
-  ): object {
-    const token = this.jwt.signToken(body);
-    const refresh = this.jwt.refreshToken(body);
-    this.refreshList.push(refresh);
+  ): Promise<any> {
+    // const token = this.jwt.signToken(body);
+    // const refresh = this.jwt.refreshToken(body);
+    // this.refreshList.push(refresh);
 
-    console.log(body)
-    // this.user.createUser()
+    await this.user.createUser(body)
 
-    res.cookie('Berer', token);
-    return {
-      access: token,
-      refresh: refresh,
-    }
+    // res.cookie('Berer', token);
+    // return {
+    //   access: token,
+    //   refresh: refresh,
+    // }
   }
 
   @Get('signin')
@@ -59,9 +60,39 @@ export class AnotherController {
     return res
   }
 
-  @UseGuards(JwtGuard)
-  @Get('chat')
-  chatUser() {
+  @Get('getall')
+  async getAllUsers() {
+    const users = await this.user.getAllUsers()
+
+    return users
+  }
+
+  @Patch('edit')
+  async editUser(@Body() data: UserDto) {
+    this.user.editUser(data)
+  }
+
+  @Put('addto_chat')
+  async addToChat(@Body() data: any) {
+    this.user.addTochat(data)
+  }
+
+  @Get('getchat')
+  async getChat() {
+    
+  }
+
+  @Get('getby_id')
+  async getUserChat(@Query() id: any) {
+    const data = this.user.getChatDetails(id['0'])
+
+    return data
+  }
+
+  // @UseGuards(JwtGuard)
+  @Put('chat')
+  chatUser(@Body() data: object) {
+    console.log(data)
     return 'lwal';
   }
 

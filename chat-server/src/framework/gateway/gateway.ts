@@ -10,18 +10,17 @@ import { OnModuleInit } from "@nestjs/common"
     singleton: true
 })
 export class MainGateWay implements MainGateWayAbstract, OnModuleInit {
-
     @WebSocketServer()
     server: Server
 
     onModuleInit() {
         this.server.on('connection', (socket) => {
-            console.log(socket.id)
-            socket.join('room1')
+            // console.log(socket.id)
+            // socket.join('room1')
         })
     }
 
-    @SubscribeMessage('new_message')
+    @SubscribeMessage('msg')
     onnewMessage(@MessageBody() body : any ): any {
         // this.server.emit('get_message', body.data)
         console.log(body)

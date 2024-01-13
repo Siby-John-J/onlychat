@@ -19,3 +19,9 @@ export async function useFetchUser(data: string) {
 
     return response.data
 }
+
+export async function userEditFetch(data: object) {
+    const response = await axios.patch('http://localhost:2000/user/edit', data)
+
+    // console.log(data)
+}

@@ -15,7 +15,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.AnotherController = void 0;
 const common_1 = require("@nestjs/common");
 const domain_1 = require("../../domain");
-const guards_1 = require("../guards");
 const another_service_1 = require("../../usecase/another/another.service");
 let AnotherController = class AnotherController {
     constructor(jwt, user) {
@@ -23,16 +22,8 @@ let AnotherController = class AnotherController {
         this.user = user;
         this.refreshList = [];
     }
-    getAnother(body, res) {
-        const token = this.jwt.signToken(body);
-        const refresh = this.jwt.refreshToken(body);
-        this.refreshList.push(refresh);
-        console.log(body);
-        res.cookie('Berer', token);
-        return {
-            access: token,
-            refresh: refresh,
-        };
+    async getAnother(body, res) {
+        await this.user.createUser(body);
     }
     async signInUSer(data) {
         const res = await this.user.signUpUser(data);
@@ -45,7 +36,24 @@ let AnotherController = class AnotherController {
         const res = await this.user.getUser(id.id);
         return res;
     }
-    chatUser() {
+    async getAllUsers() {
+        const users = await this.user.getAllUsers();
+        return users;
+    }
+    async editUser(data) {
+        this.user.editUser(data);
+    }
+    async addToChat(data) {
+        this.user.addTochat(data);
+    }
+    async getChat() {
+    }
+    async getUserChat(id) {
+        const data = this.user.getChatDetails(id['0']);
+        return data;
+    }
+    chatUser(data) {
+        console.log(data);
         return 'lwal';
     }
     refreshToken(data, res) {
@@ -61,7 +69,7 @@ __decorate([
     __param(1, (0, common_1.Res)({ passthrough: true })),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object, Object]),
-    __metadata("design:returntype", Object)
+    __metadata("design:returntype", Promise)
 ], AnotherController.prototype, "getAnother", null);
 __decorate([
     (0, common_1.Get)('signin'),
@@ -78,10 +86,43 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], AnotherController.prototype, "getUser", null);
 __decorate([
-    (0, common_1.UseGuards)(guards_1.JwtGuard),
-    (0, common_1.Get)('chat'),
+    (0, common_1.Get)('getall'),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),
+    __metadata("design:returntype", Promise)
+], AnotherController.prototype, "getAllUsers", null);
+__decorate([
+    (0, common_1.Patch)('edit'),
+    __param(0, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", Promise)
+], AnotherController.prototype, "editUser", null);
+__decorate([
+    (0, common_1.Put)('addto_chat'),
+    __param(0, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", Promise)
+], AnotherController.prototype, "addToChat", null);
+__decorate([
+    (0, common_1.Get)('getchat'),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", []),
+    __metadata("design:returntype", Promise)
+], AnotherController.prototype, "getChat", null);
+__decorate([
+    (0, common_1.Get)('getby_id'),
+    __param(0, (0, common_1.Query)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", Promise)
+], AnotherController.prototype, "getUserChat", null);
+__decorate([
+    (0, common_1.Put)('chat'),
+    __param(0, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", void 0)
 ], AnotherController.prototype, "chatUser", null);
 __decorate([

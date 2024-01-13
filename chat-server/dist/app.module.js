@@ -9,6 +9,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.AppModule = void 0;
 const common_1 = require("@nestjs/common");
 const another_module_1 = require("./usecase/another/another.module");
+const gateway_module_1 = require("./framework/gateway/gateway.module");
 const config_1 = require("@nestjs/config");
 const mongoose_1 = require("@nestjs/mongoose");
 const controller_1 = require("./controller");
@@ -21,6 +22,7 @@ exports.AppModule = AppModule = __decorate([
         imports: [
             another_module_1.AnotherModule,
             jwt_module_1.AuthJwtModule,
+            gateway_module_1.GatewayFrameWorkModule,
             mongoose_1.MongooseModule.forRoot('mongodb://127.0.0.1:27017/onlychat'),
             config_1.ConfigModule.forRoot({
                 isGlobal: true,
