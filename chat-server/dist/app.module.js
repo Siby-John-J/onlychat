@@ -8,19 +8,20 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.AppModule = void 0;
 const common_1 = require("@nestjs/common");
-const another_module_1 = require("./usecase/another/another.module");
 const gateway_module_1 = require("./framework/gateway/gateway.module");
 const config_1 = require("@nestjs/config");
 const mongoose_1 = require("@nestjs/mongoose");
 const controller_1 = require("./controller");
 const jwt_module_1 = require("./framework/jwt/jwt.module");
+const usecase_1 = require("./usecase");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
 exports.AppModule = AppModule = __decorate([
     (0, common_1.Module)({
         imports: [
-            another_module_1.AnotherModule,
+            usecase_1.UserModule,
+            usecase_1.ChatModule,
             jwt_module_1.AuthJwtModule,
             gateway_module_1.GatewayFrameWorkModule,
             mongoose_1.MongooseModule.forRoot('mongodb://127.0.0.1:27017/onlychat'),
@@ -29,7 +30,7 @@ exports.AppModule = AppModule = __decorate([
                 envFilePath: './.env',
             }),
         ],
-        controllers: [controller_1.AnotherController],
+        controllers: [controller_1.AnotherController, controller_1.ChatController],
         providers: [],
     })
 ], AppModule);

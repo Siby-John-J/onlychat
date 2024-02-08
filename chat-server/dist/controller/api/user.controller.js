@@ -15,7 +15,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.AnotherController = void 0;
 const common_1 = require("@nestjs/common");
 const domain_1 = require("../../domain");
-const another_service_1 = require("../../usecase/another/another.service");
+const user_service_1 = require("../../usecase/user/user.service");
 let AnotherController = class AnotherController {
     constructor(jwt, user) {
         this.jwt = jwt;
@@ -46,8 +46,12 @@ let AnotherController = class AnotherController {
     async addToChat(data) {
         this.user.addTochat(data);
     }
-    async getChat() {
+    async removeFromChat(data) {
+        this.user.removeFromChat(data);
+        return 'get it lwal';
     }
+    async getChat() { }
+    async clearChat(data) { }
     async getUserChat(id) {
         const data = this.user.getChatDetails(id['0']);
         return data;
@@ -106,11 +110,25 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], AnotherController.prototype, "addToChat", null);
 __decorate([
+    (0, common_1.Delete)('remove_user'),
+    __param(0, (0, common_1.Query)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", Promise)
+], AnotherController.prototype, "removeFromChat", null);
+__decorate([
     (0, common_1.Get)('getchat'),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", Promise)
 ], AnotherController.prototype, "getChat", null);
+__decorate([
+    (0, common_1.Delete)('clear_chat'),
+    __param(0, (0, common_1.Query)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", Promise)
+], AnotherController.prototype, "clearChat", null);
 __decorate([
     (0, common_1.Get)('getby_id'),
     __param(0, (0, common_1.Query)()),
@@ -136,6 +154,6 @@ __decorate([
 exports.AnotherController = AnotherController = __decorate([
     (0, common_1.Controller)('user'),
     __metadata("design:paramtypes", [domain_1.jwtAbstract,
-        another_service_1.AnotherService])
+        user_service_1.UserService])
 ], AnotherController);
 //# sourceMappingURL=user.controller.js.map

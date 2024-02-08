@@ -9,38 +9,32 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.AnotherService = void 0;
+exports.ChatService = void 0;
 const common_1 = require("@nestjs/common");
 const domain_1 = require("../../domain");
-let AnotherService = class AnotherService {
+let ChatService = class ChatService {
     constructor(userrepo) {
         this.userrepo = userrepo;
-    }
-    createUser(data) {
-        return this.userrepo.createUser(data);
-    }
-    signUpUser(data) {
-        return this.userrepo.getUser(data);
-    }
-    getUser(id) {
-        return this.userrepo.getUser(id);
-    }
-    editUser(data) {
-        return this.userrepo.editUser(data);
-    }
-    getAllUsers() {
-        return this.userrepo.getAll();
     }
     addTochat(data) {
         return this.userrepo.addUserToChat(data);
     }
+    removeFromChat(data) {
+        return this.userrepo.removeUserFromChat(data);
+    }
     getChatDetails(data) {
         return this.userrepo.getChatDetails(data);
     }
+    addMessage(data) {
+        return this.userrepo.addChat(data);
+    }
+    addMessageToP2(data) {
+        return this.userrepo.addChatTo(data);
+    }
 };
-exports.AnotherService = AnotherService;
-exports.AnotherService = AnotherService = __decorate([
+exports.ChatService = ChatService;
+exports.ChatService = ChatService = __decorate([
     (0, common_1.Injectable)(),
-    __metadata("design:paramtypes", [domain_1.UserRepoAbstract])
-], AnotherService);
-//# sourceMappingURL=another.service.js.map
+    __metadata("design:paramtypes", [domain_1.ChatRepoAbstract])
+], ChatService);
+//# sourceMappingURL=chat.service.js.map

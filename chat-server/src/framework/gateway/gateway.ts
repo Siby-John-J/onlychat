@@ -1,28 +1,40 @@
-import { MessageBody, SubscribeMessage, WebSocketGateway, WebSocketServer } from "@nestjs/websockets"
-import { MainGateWayAbstract } from "src/domain/abstracts"
-import { Server } from "socket.io"
-import { OnModuleInit } from "@nestjs/common"
+import {
+  MessageBody,
+  SubscribeMessage,
+  WebSocketGateway,
+  WebSocketServer,
+} from '@nestjs/websockets';
+import { MainGateWayAbstract } from 'src/domain/abstracts';
+import { Server } from 'socket.io';
+import { OnModuleInit } from '@nestjs/common';
+import { UserService } from 'src/usecase/user/user.service';
+import { ChatService } from 'src/usecase/chat/chat.service';
 
 @WebSocketGateway({
-    cors: {
-        origin: '*'
-    },
-    singleton: true
+  cors: {
+    origin: '*',
+  },
+  singleton: true,
 })
 export class MainGateWay implements MainGateWayAbstract, OnModuleInit {
-    @WebSocketServer()
-    server: Server
+  constructor(private chat: ChatService) {}
 
-    onModuleInit() {
-        this.server.on('connection', (socket) => {
-            // console.log(socket.id)
-            // socket.join('room1')
-        })
-    }
+  @WebSocketServer()
+  server: Server;
 
-    @SubscribeMessage('msg')
-    onnewMessage(@MessageBody() body : any ): any {
-        // this.server.emit('get_message', body.data)
-        console.log(body)
-    }
+  onModuleInit() {
+    this.server.on('connection', (socket) => {
+      // console.log(socket.id)
+      // socket.join('room1')
+    });
+  }
+
+  @SubscribeMessage('msg')
+  onnewMessage(@MessageBody() body: any): any {
+
+    this.chat.addMessage(body);
+    this.chat.addMessageToP2(body);
+
+    this.server.emit('refresh', true);
+  }
 }

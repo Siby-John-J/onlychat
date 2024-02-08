@@ -2,8 +2,9 @@ import axios from 'axios'
 import { userContext } from '../../context/userContext'
 import { userEditFetch } from '../../hooks/useFetch'
 import '../../style/Settings.css'
-import { useState, useContext, useEffect } from 'react'
-import { addToChat } from '../../hooks/useChat'
+import { useState, useContext, useEffect, useCallback } from 'react'
+import { addToChat, removeFromChat } from '../../hooks/useChat'
+import { User } from '../../types/setttings_types'
 
 function Settings() {
   const [isOpen, setIsOpen] = useState(false)
@@ -16,21 +17,47 @@ function Settings() {
     chats,
     setFirstname,
     setLastname,
-    setEmail
-   }: any = useContext(userContext)
+    setEmail,
+    refresh,
+    setRefresh
+   } : any = useContext(userContext)
+
+   async function getAllUsers() {
+    const resp = await axios.get('http://localhost:2000/user/getall')
+
+    setAllUsers(data => resp.data)
+  }
+
+  // const callall = useCallback( async () => {
+  //   const resp = await axios.get('http://localhost:2000/user/getall')
+
+  //   setAllUsers(resp.data)
+  // }, [refresh])
 
   useEffect(() => {
-    async function getAllUsers() {
-      const resp = await axios.get('http://localhost:2000/user/getall')
-
-      setAllUsers(resp.data)
-    }
-    
     getAllUsers()
   }, [])
 
-  function add(_id: string) {
-    addToChat(id, _id)
+  function action(_id: string, callback: Function) {
+    const re = check(callback())
+
+    if(re === 'remove') {
+      const res = removeFromChat(id, _id)
+      res.then(data => {
+      console.log(allUsers)
+      })
+    } else {
+      const res = addToChat(id, _id)
+      res.then(data => {
+        // setRefresh(!refresh)
+      })
+    }
+  }
+
+  function check(user: User) {
+    const store =  chats.some((data: any) => data.id === user.id) ? 'remove' : 'add'
+    // setRefresh(!refresh)
+    return store
   }
   
   return (
@@ -62,21 +89,22 @@ function Settings() {
           <div className="userslist">
             <h4 className='usersTitle'>All Users</h4>
             <div className="datas">
-
             {
-              allUsers.map((user, index) => {
-                // if(user.chats.length !== 0) {
-                //   console.log(user.chats[0].id, id)
-                // }
+              allUsers.map((user: User, index) : any => {
+                if(id === user.id) {
+                  return null
+                }
 
-                return (
+                return  (
                   <div className="user" key={index}>
                     <div className="image"></div>
                     <label htmlFor="">{user.firstname}</label>
                     <button onClick={() => {
-                      add(user.id)
+                      action(user.id, () => {
+                        return user
+                      })
                     }}>{
-                      chats.some(data => data.id === user.id) ? 'remove' : 'add'
+                      check(user)
                     }</button>
                   </div>
                 )

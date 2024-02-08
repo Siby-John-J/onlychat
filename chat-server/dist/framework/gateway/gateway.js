@@ -15,13 +15,19 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.MainGateWay = void 0;
 const websockets_1 = require("@nestjs/websockets");
 const socket_io_1 = require("socket.io");
+const chat_service_1 = require("../../usecase/chat/chat.service");
 let MainGateWay = class MainGateWay {
+    constructor(chat) {
+        this.chat = chat;
+    }
     onModuleInit() {
         this.server.on('connection', (socket) => {
         });
     }
     onnewMessage(body) {
-        console.log(body);
+        this.chat.addMessage(body);
+        this.chat.addMessageToP2(body);
+        this.server.emit('refresh', true);
     }
 };
 exports.MainGateWay = MainGateWay;
@@ -39,9 +45,10 @@ __decorate([
 exports.MainGateWay = MainGateWay = __decorate([
     (0, websockets_1.WebSocketGateway)({
         cors: {
-            origin: '*'
+            origin: '*',
         },
-        singleton: true
-    })
+        singleton: true,
+    }),
+    __metadata("design:paramtypes", [chat_service_1.ChatService])
 ], MainGateWay);
 //# sourceMappingURL=gateway.js.map

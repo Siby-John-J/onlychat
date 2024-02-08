@@ -1,4 +1,4 @@
-import { AddChat, UserDto } from "../dto";
+import { ChatAction, UserDto } from "../dto";
 
 export abstract class UserRepoAbstract<T> {
     abstract createUser(data: UserDto) : Promise<any>
@@ -11,7 +11,13 @@ export abstract class UserRepoAbstract<T> {
 
     abstract getAll(): Promise<UserDto>
 
-    abstract addUserToChat(data: AddChat)
+    abstract addUserToChat(data: ChatAction)
+
+    abstract removeUserFromChat(data: ChatAction)
 
     abstract getChatDetails(data: object)
+
+    abstract addChat(data: object)
+
+    abstract addChatTo(data: object)
 }

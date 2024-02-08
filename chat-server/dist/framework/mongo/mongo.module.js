@@ -10,26 +10,33 @@ exports.MongoModule = void 0;
 const common_1 = require("@nestjs/common");
 const mongoose_1 = require("@nestjs/mongoose");
 const domain_1 = require("../../domain");
-const user_repository_service_1 = require("./user.repository.service");
+const user_repository_service_1 = require("./repository/user.repository.service");
 const User_schema_1 = require("./User.schema");
+const chat_repository_service_1 = require("./repository/chat.repository.service");
 let MongoModule = class MongoModule {
 };
 exports.MongoModule = MongoModule;
 exports.MongoModule = MongoModule = __decorate([
     (0, common_1.Module)({
         imports: [
-            mongoose_1.MongooseModule.forFeature([{
+            mongoose_1.MongooseModule.forFeature([
+                {
                     name: 'User',
-                    schema: User_schema_1.UserSchema
-                }])
+                    schema: User_schema_1.UserSchema,
+                },
+            ]),
         ],
         providers: [
             {
                 provide: domain_1.UserRepoAbstract,
-                useClass: user_repository_service_1.UserRepo
+                useClass: user_repository_service_1.UserRepo,
+            },
+            {
+                provide: domain_1.ChatRepoAbstract,
+                useClass: chat_repository_service_1.ChatRepo
             }
         ],
-        exports: [domain_1.UserRepoAbstract]
+        exports: [domain_1.UserRepoAbstract, domain_1.ChatRepoAbstract],
     })
 ], MongoModule);
 //# sourceMappingURL=mongo.module.js.map

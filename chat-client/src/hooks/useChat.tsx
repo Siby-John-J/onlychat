@@ -1,13 +1,18 @@
 import axios from "axios"
 
 export async function addToChat(myId: string, id: string) {
-
-    const resp = await axios.put('http://localhost:2000/user/addto_chat', {
+    const resp = await axios.put('http://localhost:2000/chat/addto_chat', {
         myId,
         id
     })
 
-    console.log(resp.data)
+    return resp.data
+}
+
+export async function removeFromChat(myId: string, id: string) {
+    const resp = await axios.delete(`http://localhost:2000/chat/remove_user?myId=${myId}&id=${id}`)
+
+    return resp.data
 }
 
 export async function getChats(id: []) {
@@ -24,4 +29,10 @@ export async function sendMessageFetch(text: string, myId: string, _id: string) 
         senderId: myId,
         recvId: _id
     })
+}
+
+export async function useclearChat(myId: string, id: string) {
+    const resp = await axios.delete(`http://localhost:2000/chat/clear_chat?myId=${myId}&id=${id}`)
+
+    return resp.data
 }

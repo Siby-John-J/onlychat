@@ -12,7 +12,7 @@ export interface UserAuthDto {
     password: string
 }
 
-export interface AddChat {
+export interface ChatAction {
     myId: string
     id: string
 }

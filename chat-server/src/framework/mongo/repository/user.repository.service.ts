@@ -1,5 +1,5 @@
 import { InjectModel } from "@nestjs/mongoose";
-import { AddChat, UserDto, UserRepoAbstract } from "src/domain";
+import { ChatAction, UserDto, UserRepoAbstract, chatDto } from "src/domain";
 import { Model } from 'mongoose'
 import { Injectable } from "@nestjs/common";
 import { randomUUID } from "crypto";
@@ -40,19 +40,18 @@ export class UserRepo<T> implements UserRepoAbstract<T> {
     }
 
     async getUser(data: any) : Promise<null | object> {
-
         if(typeof data === 'string') {
             const user = await this.userModel.findOne({id: data})
             return user
         }
 
         const { email, password } = data
-
+        
         const user = await this.userModel.findOne({
             email: email,
             password: password
         })
-
+        
         return user
     }
 
@@ -62,42 +61,58 @@ export class UserRepo<T> implements UserRepoAbstract<T> {
         return all_users
     }
 
-    async addUserToChat(data: AddChat) {
+    async addUserToChat(data: ChatAction) {
         const {myId, id} = data
 
-        const check_update = await this.userModel.findOne({id: myId}, {_id: 0, chats: 1})
+        const chat_update = await this.userModel.updateOne({id: myId}, {
+            $push: { chats: {
+                id: id,
+                data: []
+            } }
+        })
 
-        const res = check_update['chats'].map(dat => {
-            if(dat.id === id) {
-                return true
-            }
-        })[0]
+        const chat_update_peer2 = await this.userModel.updateOne({id: id}, {
+            $push: { chats: {
+                id: myId,
+                data: []
+            } }
+        })
 
-        if(res === true) {
-            const chat_remove = await this.userModel.updateOne({id: myId}, {
-                $pull: {
-                    'chats': {
-                        "id": id
-                    }
-                }
-            })
-            
-            return 'removed'
-        } else {
-            const chat_update = await this.userModel.updateOne({id: myId}, {
-                $push: { chats: {
-                    id: id,
-                    data: []
-                } }
-            })
+        return chat_update
+    }
 
-            return 'added'
-        }
+    async removeUserFromChat(data: ChatAction) {
+        const { myId, id } = data
+
+        const chat_remove = await this.userModel.updateOne({id: myId}, {
+            $pull: { chats: {
+                id: id
+            } }
+        })
+        
+        return chat_remove
     }
 
     async getChatDetails(data: object) {
         const chat_update = await this.userModel.find({id: data})
 
         return chat_update
+    }
+
+    async addChat(data: chatDto) {
+        const { message, senderId, recvId } = data
+
+        const add_chat = await this.userModel.updateOne(
+            {id: senderId, "chats.id": recvId},
+            { $push: { "chats.$.data": {p1: message} } }
+        )
+    }
+
+    async addChatTo(data: chatDto) {
+        const { message, senderId, recvId } = data
+        const add_chat = await this.userModel.updateOne(
+            { id: recvId, "chats.id": senderId },
+            { $push: { "chats.$.data": { p2: message } } }
+        )
     }
 }

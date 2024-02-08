@@ -22,7 +22,7 @@
 /// <reference types="mongoose/types/validation" />
 /// <reference types="mongoose/types/virtuals" />
 /// <reference types="mongoose/types/inferschematype" />
-import { AddChat, UserDto, UserRepoAbstract } from "src/domain";
+import { ChatAction, UserDto, UserRepoAbstract, chatDto } from "src/domain";
 import { Model } from 'mongoose';
 export declare class UserRepo<T> implements UserRepoAbstract<T> {
     private userModel;
@@ -32,6 +32,9 @@ export declare class UserRepo<T> implements UserRepoAbstract<T> {
     editUser(data: UserDto): Promise<void>;
     getUser(data: any): Promise<null | object>;
     getAll(): Promise<any>;
-    addUserToChat(data: AddChat): Promise<"removed" | "added">;
+    addUserToChat(data: ChatAction): Promise<import("mongoose").UpdateWriteOpResult>;
+    removeUserFromChat(data: ChatAction): Promise<import("mongoose").UpdateWriteOpResult>;
     getChatDetails(data: object): Promise<import("mongoose").IfAny<T, any, import("mongoose").Document<unknown, {}, T> & import("mongoose").Require_id<T>>[]>;
+    addChat(data: chatDto): Promise<void>;
+    addChatTo(data: chatDto): Promise<void>;
 }

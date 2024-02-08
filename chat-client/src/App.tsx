@@ -8,6 +8,7 @@ import { userContext } from "./context/userContext";
 
 function App() {
     const [isLogin, SetisLogin] = useState(true);
+    const [refresh, setRefresh] = useState(false)
     const [firstname, setFirstname] = useState('')
     const [lastname, setLastname] = useState('')
     const [password, setPassword] = useState('')
@@ -30,7 +31,9 @@ function App() {
                     id,
                     setId,
                     chats,
-                    setChat
+                    setChat,
+                    refresh,
+                    setRefresh
                 }}>
                     <Routes>
                         <Route path="/" Component={Auth} />

@@ -5,7 +5,7 @@ import VideoChat from '../../assets/video-chat-icon.svg'
 import { useContext, useEffect, useState } from 'react'
 import { useFetchUser } from '../../hooks/useFetch'
 import { userContext } from '../../context/userContext'
-import { getChats, sendMessageFetch } from '../../hooks/useChat'
+import { getChats, useclearChat } from '../../hooks/useChat'
 
 const socket = io('http://localhost:2000')
 
@@ -13,7 +13,7 @@ function Chats() {
     const [shift, Unshift] = useState(false)
     const [cModel, setcModel] = useState(false)
     const [select, setSelect] = useState(false)
-    const [currentChat, setCurrentChat] = useState({})
+    const [currentChat, setCurrentChat] : any = useState({})
     const [text, setText] = useState('')
 
     const [params, setParams] = useSearchParams()
@@ -26,12 +26,16 @@ function Chats() {
         setId,
         id,
         setChat,
-        chats
+        chats,
+        refresh,
+        setRefresh
     }: any = useContext(userContext)
 
-    // const [name, setName] = useState('')
-
     const [allChats, setAllChats] = useState([])
+
+    socket.on('refresh', (data: boolean) => {
+        setRefresh(!refresh)
+    })
     
     useEffect(() => {
         async function getUser() {
@@ -53,7 +57,7 @@ function Chats() {
         }
 
         getUser()
-    }, [])
+    }, [refresh])
 
     const handleModel = () => {
         Unshift(!shift)
@@ -61,7 +65,6 @@ function Chats() {
 
     const createCall = () => {
         setcModel(!cModel)
-        console.log(cModel)
     }
 
     const selectChat = (_id: any) => {
@@ -70,14 +73,16 @@ function Chats() {
         setCurrentChat(filtered)
     }
 
+    const clearChat = (_id: any) => {
+        useclearChat(id, _id)
+    }
+
     const sendMessage = async (_text: string, _id: string) => {
-        // console.log(_id, id)
         socket.emit('msg', {
             message: text,
             senderId: id,
             recvId: _id
         })
-        // await sendMessageFetch(text, id, _id)
     }
     
     return (
@@ -88,9 +93,9 @@ function Chats() {
                     <input type="text" />
                 </div>
                 {
-                    allChats.map(data => {
+                    allChats.map((data, ind: number) => {
                         return (
-                            <div className="selections" onClick={e => 
+                            <div className="selections" key={ind} onClick={e => 
                                 selectChat(data.id)
                             }>
                                 <div className="images">
@@ -110,8 +115,8 @@ function Chats() {
                 {
                     select === true ?
                       (function returns() {
-                        // console.log(currentChat[0].chats, Date())
-                        const {firstname, lastname, chats, id} = currentChat[0]
+                        const {firstname, lastname, id} = currentChat[0]
+                        const curr = chats.filter(e => e.id === id)[0]
 
                         return (
                             <>
@@ -124,23 +129,45 @@ function Chats() {
                                     <img onClick={handleModel} className='dots' src={Icon} alt="" />
                                     <img onClick={createCall} className='vid' src={VideoChat} alt="" />
                                     <div style={{display: shift ? 'block' : 'none'}} className="profile-model">
-                                </div>
+                                        <button className='c-chat' onClick={() => {
+                                            clearChat(id)
+                                        }}>clear chat</button>
+                                    </div>
                                 </div>
 
                                 <div className="data">
-                                    <div className="left-single-msg">
-                                        <label className='content' htmlFor="">difjidjijfidjfijdfjijdifji</label>
-                                        <label className='time' htmlFor="">12:00pm</label>
-                                    </div>
-                                    <div className="right-single-msg">
-                                        <label className='content' htmlFor="">difjidjijfidjfijdfjdifjidjijfidjfijdfjijdifjiijdifji</label>
-                                        <label className='time' htmlFor="">12:00pm</label>
-                                    </div>
+                                    {
+                                        curr.data.map((msg: any, index :number) => {
+                                            {
+                                                if(msg?.p1) {
+                                                    const store = msg['p1']
+                                                    return (
+                                                        <div className="right-single-msg" key={index}>
+                                                            <label className='content' htmlFor="">{store}</label>
+                                                            <label className='time' htmlFor="">12:00pm</label>
+                                                        </div>
+                                                    )
+                                                } else {
+                                                    const store = msg['p2']
+                                                    return (
+                                                        <div className="left-single-msg">
+                                                            <div className='left-child'>
+                                                                <label className='content' htmlFor="">{store}</label>
+                                                                <label className='time' htmlFor="">12:00pm</label>
+                                                            </div>
+                                                        </div>
+                                                    )
+                                                }
+                                            }
+                                        })
+                                    }
                                 </div>
 
                                 <div className="chat-input">
                                     <input type="text" placeholder='Type Somethink...' onChange={e => setText(e.target.value)} />
-                                    <button onClick={() => sendMessage(text, id)}>Send</button>
+                                    <button onClick={() => 
+                                        sendMessage(text, id)
+                                    }>Send</button>
                                 </div>
                             </>
                         )

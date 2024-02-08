@@ -9,7 +9,7 @@ export interface UserAuthDto {
     email: string;
     password: string;
 }
-export interface AddChat {
+export interface ChatAction {
     myId: string;
     id: string;
 }

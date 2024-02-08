@@ -16,6 +16,36 @@ let UserService = class UserService {
     constructor(userrepo) {
         this.userrepo = userrepo;
     }
+    createUser(data) {
+        return this.userrepo.createUser(data);
+    }
+    signUpUser(data) {
+        return this.userrepo.getUser(data);
+    }
+    getUser(id) {
+        return this.userrepo.getUser(id);
+    }
+    editUser(data) {
+        return this.userrepo.editUser(data);
+    }
+    getAllUsers() {
+        return this.userrepo.getAll();
+    }
+    addTochat(data) {
+        return this.userrepo.addUserToChat(data);
+    }
+    removeFromChat(data) {
+        return this.userrepo.removeUserFromChat(data);
+    }
+    getChatDetails(data) {
+        return this.userrepo.getChatDetails(data);
+    }
+    addMessage(data) {
+        return this.userrepo.addChat(data);
+    }
+    addMessageToP2(data) {
+        return this.userrepo.addChatTo(data);
+    }
 };
 exports.UserService = UserService;
 exports.UserService = UserService = __decorate([
