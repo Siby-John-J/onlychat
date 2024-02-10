@@ -14,11 +14,11 @@ const common_1 = require("@nestjs/common");
 const websockets_1 = require("@nestjs/websockets");
 const socket_io_1 = require("socket.io");
 let GatewayService = class GatewayService {
+    get(value) {
+        this.server.emit('refresh', value);
+    }
     onModuleInit() {
         this.server.on('connection', (socket) => {
-            socket.on('msg', soc => {
-                console.log(soc, ' socket');
-            });
         });
     }
 };

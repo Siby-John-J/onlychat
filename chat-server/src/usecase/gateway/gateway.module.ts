@@ -5,7 +5,6 @@ import { GatewayController } from 'src/controller/api/gateway.controller';
 
 @Module({
   imports: [GatewayFrameWorkModule],
-  controllers: [GatewayController],
   providers: [GatewayService],
   exports: [GatewayService],
 })

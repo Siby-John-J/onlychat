@@ -29,8 +29,11 @@ export declare class ChatRepo<T> implements ChatRepoAbstract<T> {
     constructor(userModel: Model<T>);
     addChat(data: chatDto): Promise<void>;
     addChatTo(data: chatDto): Promise<void>;
-    addUserToChat(data: ChatAction): Promise<import("mongoose").UpdateWriteOpResult>;
+    addUserToChat(data: ChatAction): Promise<{
+        chat_update: import("mongoose").UpdateWriteOpResult;
+        chat_update_peer2: import("mongoose").UpdateWriteOpResult;
+    }>;
     removeUserFromChat(data: ChatAction): Promise<import("mongoose").UpdateWriteOpResult>;
     getChatDetails(data: object): Promise<import("mongoose").IfAny<T, any, import("mongoose").Document<unknown, {}, T> & import("mongoose").Require_id<T>>[]>;
-    clearChat(data: object): Promise<void>;
+    clearChat(data: ChatAction): Promise<import("mongoose").UpdateWriteOpResult>;
 }

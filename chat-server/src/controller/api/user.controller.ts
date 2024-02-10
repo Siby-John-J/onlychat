@@ -73,30 +73,30 @@ export class AnotherController {
     this.user.editUser(data);
   }
 
-  @Put('addto_chat')
-  async addToChat(@Body() data: any) {
-    this.user.addTochat(data);
-  }
+  // @Put('addto_chat')
+  // async addToChat(@Body() data: any) {
+  //   this.user.addTochat(data);
+  // }
 
-  @Delete('remove_user')
-  async removeFromChat(@Query() data: ChatAction) {
-    this.user.removeFromChat(data);
+  // @Delete('remove_user')
+  // async removeFromChat(@Query() data: ChatAction) {
+  //   this.user.removeFromChat(data);
 
-    return 'get it lwal';
-  }
+  //   return 'get it lwal';
+  // }
 
-  @Get('getchat')
-  async getChat() {}
+  // @Get('getchat')
+  // async getChat() {}
 
-  @Delete('clear_chat')
-  async clearChat(@Query() data: any) {}
+  // @Delete('clear_chat')
+  // async clearChat(@Query() data: any) {}
 
-  @Get('getby_id')
-  async getUserChat(@Query() id: any) {
-    const data = this.user.getChatDetails(id['0']);
+  // @Get('getby_id')
+  // async getUserChat(@Query() id: any) {
+  //   const data = this.user.getChatDetails(id['0']);
 
-    return data;
-  }
+  //   return data;
+  // }
 
   // @UseGuards(JwtGuard)
   @Put('chat')

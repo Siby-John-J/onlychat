@@ -15,9 +15,11 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.ChatController = void 0;
 const common_1 = require("@nestjs/common");
 const chat_service_1 = require("../../usecase/chat/chat.service");
+const gateway_service_1 = require("../../usecase/gateway/gateway.service");
 let ChatController = class ChatController {
-    constructor(chat) {
+    constructor(chat, gateway) {
         this.chat = chat;
+        this.gateway = gateway;
     }
     async addToChat(data) {
         this.chat.addTochat(data);
@@ -27,7 +29,9 @@ let ChatController = class ChatController {
         return 'get it lwal';
     }
     async clearChat(data) {
-        console.log(data);
+        const res = this.chat.clearChat(data);
+        this.gateway.onModuleInit();
+        this.gateway.get(true);
     }
     async getUserChat(id) {
         const data = this.chat.getChatDetails(id['0']);
@@ -65,6 +69,7 @@ __decorate([
 ], ChatController.prototype, "getUserChat", null);
 exports.ChatController = ChatController = __decorate([
     (0, common_1.Controller)('chat'),
-    __metadata("design:paramtypes", [chat_service_1.ChatService])
+    __metadata("design:paramtypes", [chat_service_1.ChatService,
+        gateway_service_1.GatewayService])
 ], ChatController);
 //# sourceMappingURL=chat.controller.js.map

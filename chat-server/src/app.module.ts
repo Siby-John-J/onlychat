@@ -14,6 +14,7 @@ import { ChatModule, UserModule } from './usecase';
     UserModule,
     ChatModule,
     AuthJwtModule,
+    GatewayModule,
     GatewayFrameWorkModule,
     MongooseModule.forRoot('mongodb://127.0.0.1:27017/onlychat'),
     ConfigModule.forRoot({

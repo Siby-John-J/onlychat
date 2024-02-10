@@ -43,19 +43,6 @@ let AnotherController = class AnotherController {
     async editUser(data) {
         this.user.editUser(data);
     }
-    async addToChat(data) {
-        this.user.addTochat(data);
-    }
-    async removeFromChat(data) {
-        this.user.removeFromChat(data);
-        return 'get it lwal';
-    }
-    async getChat() { }
-    async clearChat(data) { }
-    async getUserChat(id) {
-        const data = this.user.getChatDetails(id['0']);
-        return data;
-    }
     chatUser(data) {
         console.log(data);
         return 'lwal';
@@ -102,40 +89,6 @@ __decorate([
     __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", Promise)
 ], AnotherController.prototype, "editUser", null);
-__decorate([
-    (0, common_1.Put)('addto_chat'),
-    __param(0, (0, common_1.Body)()),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object]),
-    __metadata("design:returntype", Promise)
-], AnotherController.prototype, "addToChat", null);
-__decorate([
-    (0, common_1.Delete)('remove_user'),
-    __param(0, (0, common_1.Query)()),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object]),
-    __metadata("design:returntype", Promise)
-], AnotherController.prototype, "removeFromChat", null);
-__decorate([
-    (0, common_1.Get)('getchat'),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", []),
-    __metadata("design:returntype", Promise)
-], AnotherController.prototype, "getChat", null);
-__decorate([
-    (0, common_1.Delete)('clear_chat'),
-    __param(0, (0, common_1.Query)()),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object]),
-    __metadata("design:returntype", Promise)
-], AnotherController.prototype, "clearChat", null);
-__decorate([
-    (0, common_1.Get)('getby_id'),
-    __param(0, (0, common_1.Query)()),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object]),
-    __metadata("design:returntype", Promise)
-], AnotherController.prototype, "getUserChat", null);
 __decorate([
     (0, common_1.Put)('chat'),
     __param(0, (0, common_1.Body)()),

@@ -1,4 +1,4 @@
-import { UserDto, UserAuthDto, jwtAbstract, ChatAction } from 'src/domain';
+import { UserDto, UserAuthDto, jwtAbstract } from 'src/domain';
 import { Response } from 'express';
 import { UserService } from 'src/usecase/user/user.service';
 export declare class AnotherController {
@@ -11,11 +11,6 @@ export declare class AnotherController {
     getUser(id: any): Promise<object>;
     getAllUsers(): Promise<UserDto>;
     editUser(data: UserDto): Promise<void>;
-    addToChat(data: any): Promise<void>;
-    removeFromChat(data: ChatAction): Promise<string>;
-    getChat(): Promise<void>;
-    clearChat(data: any): Promise<void>;
-    getUserChat(id: any): Promise<any>;
     chatUser(data: object): string;
     refreshToken(data: object, res: Response): void;
 }

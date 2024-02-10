@@ -41,7 +41,10 @@ export class ChatRepo<T> implements ChatRepoAbstract<T> {
             } }
         })
 
-        return chat_update
+        return {
+            chat_update,
+            chat_update_peer2
+        }
     }
 
     async removeUserFromChat(data: ChatAction) {
@@ -62,12 +65,14 @@ export class ChatRepo<T> implements ChatRepoAbstract<T> {
         return chat_update
     }
 
-    async clearChat(data: object) {
-        // const clear_chat = await this.userModel.updateOne(
-        //     {},
-        //     { $set: { 'chats.$.data': [] } }
-        // )
+    async clearChat(data: ChatAction) {
+        const { myId, id } = data
 
-        // return clear_chat
+        const clear_chat = await this.userModel.updateOne(
+            {id: myId, 'chats.id': id},
+            { $set: { 'chats.$.data': [] } }
+        )
+
+        return clear_chat
     }
 }

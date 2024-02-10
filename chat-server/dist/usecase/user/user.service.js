@@ -31,21 +31,6 @@ let UserService = class UserService {
     getAllUsers() {
         return this.userrepo.getAll();
     }
-    addTochat(data) {
-        return this.userrepo.addUserToChat(data);
-    }
-    removeFromChat(data) {
-        return this.userrepo.removeUserFromChat(data);
-    }
-    getChatDetails(data) {
-        return this.userrepo.getChatDetails(data);
-    }
-    addMessage(data) {
-        return this.userrepo.addChat(data);
-    }
-    addMessageToP2(data) {
-        return this.userrepo.addChatTo(data);
-    }
 };
 exports.UserService = UserService;
 exports.UserService = UserService = __decorate([

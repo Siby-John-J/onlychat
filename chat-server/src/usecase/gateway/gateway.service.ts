@@ -16,16 +16,15 @@ export class GatewayService implements OnModuleInit{
     server: Server
     // constructor(private gateway: MainGateWayAbstract) {}
 
-    // get(value: string): any {
-    //     console.log('worked')
-    //     return this.gateway.onModuleInit()
-    // }
+    get(value: boolean): any {
+        this.server.emit('refresh', value)
+    }
 
     onModuleInit() {
         this.server.on('connection', (socket) =>{
-            socket.on('msg', soc => {
-                console.log(soc, ' socket')
-            })
+            // socket.on('msg', soc => {
+            //     console.log(soc, ' socket')
+            // })
         })
     }
 }

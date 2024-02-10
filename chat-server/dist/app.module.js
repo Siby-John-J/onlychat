@@ -13,6 +13,7 @@ const config_1 = require("@nestjs/config");
 const mongoose_1 = require("@nestjs/mongoose");
 const controller_1 = require("./controller");
 const jwt_module_1 = require("./framework/jwt/jwt.module");
+const gateway_module_2 = require("./usecase/gateway/gateway.module");
 const usecase_1 = require("./usecase");
 let AppModule = class AppModule {
 };
@@ -23,6 +24,7 @@ exports.AppModule = AppModule = __decorate([
             usecase_1.UserModule,
             usecase_1.ChatModule,
             jwt_module_1.AuthJwtModule,
+            gateway_module_2.GatewayModule,
             gateway_module_1.GatewayFrameWorkModule,
             mongoose_1.MongooseModule.forRoot('mongodb://127.0.0.1:27017/onlychat'),
             config_1.ConfigModule.forRoot({

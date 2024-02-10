@@ -1,10 +1,14 @@
 import { Controller, Body, Put, Delete, Query, Get } from "@nestjs/common";
 import { ChatService } from "src/usecase/chat/chat.service";
 import { ChatAction } from "src/domain";
+import { GatewayService } from "src/usecase/gateway/gateway.service";
 
 @Controller('chat')
 export class ChatController {
-    constructor(private chat: ChatService) {}
+    constructor(
+      private chat: ChatService,
+      private gateway: GatewayService
+    ) {}
 
     @Put('addto_chat')
     async addToChat(@Body() data: any) {
@@ -20,8 +24,10 @@ export class ChatController {
 
     @Delete('clear_chat')
     async clearChat(@Query() data: any) {
-      console.log(data)
-      
+      const res = this.chat.clearChat(data)
+
+      this.gateway.onModuleInit()
+      this.gateway.get(true)
     }
 
     @Get('getby_id')

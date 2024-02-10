@@ -7,4 +7,5 @@ export interface User {
     lastname: string
     id: string
     password: string
+    _id?: string
 }

@@ -31,6 +31,9 @@ let ChatService = class ChatService {
     addMessageToP2(data) {
         return this.userrepo.addChatTo(data);
     }
+    clearChat(data) {
+        this.userrepo.clearChat(data);
+    }
 };
 exports.ChatService = ChatService;
 exports.ChatService = ChatService = __decorate([

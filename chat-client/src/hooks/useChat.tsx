@@ -16,7 +16,7 @@ export async function removeFromChat(myId: string, id: string) {
 }
 
 export async function getChats(id: []) {
-    const resp = await axios.get('http://localhost:2000/user/getby_id', {
+    const resp = await axios.get('http://localhost:2000/chat/getby_id', {
         params: [id]
     })
 

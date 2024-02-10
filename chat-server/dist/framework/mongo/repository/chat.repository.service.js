@@ -42,7 +42,10 @@ let ChatRepo = class ChatRepo {
                     data: []
                 } }
         });
-        return chat_update;
+        return {
+            chat_update,
+            chat_update_peer2
+        };
     }
     async removeUserFromChat(data) {
         const { myId, id } = data;
@@ -58,6 +61,9 @@ let ChatRepo = class ChatRepo {
         return chat_update;
     }
     async clearChat(data) {
+        const { myId, id } = data;
+        const clear_chat = await this.userModel.updateOne({ id: myId, 'chats.id': id }, { $set: { 'chats.$.data': [] } });
+        return clear_chat;
     }
 };
 exports.ChatRepo = ChatRepo;

@@ -7,4 +7,5 @@ export declare class ChatService {
     getChatDetails(data: object): any;
     addMessage(data: object): any;
     addMessageToP2(data: object): any;
+    clearChat(data: object): void;
 }

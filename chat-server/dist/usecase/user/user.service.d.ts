@@ -1,4 +1,4 @@
-import { ChatAction, UserDto } from 'src/domain';
+import { UserDto } from 'src/domain';
 import { UserRepoAbstract } from 'src/domain';
 export declare class UserService {
     private userrepo;
@@ -8,9 +8,4 @@ export declare class UserService {
     getUser(id: string): Promise<object>;
     editUser(data: object): any;
     getAllUsers(): Promise<UserDto>;
-    addTochat(data: ChatAction): any;
-    removeFromChat(data: ChatAction): any;
-    getChatDetails(data: object): any;
-    addMessage(data: object): any;
-    addMessageToP2(data: object): any;
 }

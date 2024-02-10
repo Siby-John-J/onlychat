@@ -6,15 +6,22 @@ import { useContext, useEffect, useState } from 'react'
 import { useFetchUser } from '../../hooks/useFetch'
 import { userContext } from '../../context/userContext'
 import { getChats, useclearChat } from '../../hooks/useChat'
+import { User } from '../../types/setttings_types'
+import Search from './Search'
+import { searchContext } from '../../context/searchContext'
 
 const socket = io('http://localhost:2000')
 
 function Chats() {
+    const _input = document.getElementsByClassName('real_input')[0]
+
     const [shift, Unshift] = useState(false)
     const [cModel, setcModel] = useState(false)
     const [select, setSelect] = useState(false)
     const [currentChat, setCurrentChat] : any = useState({})
     const [text, setText] = useState('')
+
+    const [search, setSearch] = useState('')
 
     const [params, setParams] = useSearchParams()
     const { 
@@ -77,7 +84,7 @@ function Chats() {
         useclearChat(id, _id)
     }
 
-    const sendMessage = async (_text: string, _id: string) => {
+    const sendMessage = (_text: string, _id: string) => {
         socket.emit('msg', {
             message: text,
             senderId: id,
@@ -90,23 +97,27 @@ function Chats() {
             <div className="options">
                 <div className="searching">
                     <h1>Chats</h1>
-                    <input type="text" />
+                    <searchContext.Provider value={{search, setSearch}}>
+                        <Search />
+                    </searchContext.Provider>
                 </div>
                 {
-                    allChats.map((data, ind: number) => {
-                        return (
-                            <div className="selections" key={ind} onClick={e => 
-                                selectChat(data.id)
-                            }>
-                                <div className="images">
-                                    
+                    allChats.map((data: User, ind: number) => {
+                        if(data.firstname.startsWith(search)) {
+                            return (
+                                <div className="selections" key={ind} onClick={e => 
+                                    selectChat(data.id)
+                                }>
+                                    <div className="images">
+                                        
+                                    </div>
+                                    <div className="texts-sel">
+                                        <label className='name' htmlFor="">{data.firstname}</label>
+                                        <label className='last-msg' htmlFor="">Last message is this</label>
+                                    </div>
                                 </div>
-                                <div className="texts-sel">
-                                    <label className='name' htmlFor="">{data.firstname}</label>
-                                    <label className='last-msg' htmlFor="">Last message is this</label>
-                                </div>
-                            </div>
-                        )
+                            )
+                        }
                     })
                 }
             </div>
@@ -116,7 +127,7 @@ function Chats() {
                     select === true ?
                       (function returns() {
                         const {firstname, lastname, id} = currentChat[0]
-                        const curr = chats.filter(e => e.id === id)[0]
+                        const curr = chats.filter((e: any) => e.id === id)[0]
 
                         return (
                             <>
@@ -164,10 +175,18 @@ function Chats() {
                                 </div>
 
                                 <div className="chat-input">
-                                    <input type="text" placeholder='Type Somethink...' onChange={e => setText(e.target.value)} />
-                                    <button onClick={() => 
-                                        sendMessage(text, id)
-                                    }>Send</button>
+                                    <input className='real_input' type="text" placeholder='Type Somethink...' onKeyDown={e => {
+                                        if(e.key === 'Enter' && text !== '') {
+                                            sendMessage(text, id)
+                                            e.currentTarget.value = ''
+                                        }
+                                    }} onChange={e => setText(e.target.value)} />
+                                    <button onClick={() => {
+                                        if(text !== '') {
+                                            sendMessage(text, id)
+                                            _input.value = ''
+                                        }
+                                    }}>Send</button>
                                 </div>
                             </>
                         )
