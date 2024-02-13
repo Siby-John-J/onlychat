@@ -8,4 +8,5 @@ export declare class MainGateWay implements MainGateWayAbstract, OnModuleInit {
     server: Server;
     onModuleInit(): void;
     onnewMessage(body: any): any;
+    onnewMessage2(body: any): void;
 }

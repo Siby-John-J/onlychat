@@ -7,7 +7,6 @@ import {
 import { MainGateWayAbstract } from 'src/domain/abstracts';
 import { Server } from 'socket.io';
 import { OnModuleInit } from '@nestjs/common';
-import { UserService } from 'src/usecase/user/user.service';
 import { ChatService } from 'src/usecase/chat/chat.service';
 
 @WebSocketGateway({
@@ -36,5 +35,12 @@ export class MainGateWay implements MainGateWayAbstract, OnModuleInit {
     this.chat.addMessageToP2(body);
 
     this.server.emit('refresh', true);
+  }
+
+  @SubscribeMessage('send:offer')
+  onnewMessage2(@MessageBody() body: any) {
+    const { offer, id } = JSON.parse(body)
+
+    this.server.emit(id, 'yeye body')
   }
 }

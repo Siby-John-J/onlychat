@@ -278,3 +278,56 @@
     cursor: pointer;
     height: 35px;
 }
+
+/* Video chat */
+
+.vid-div {
+    height: 20em;
+    width: 30em;
+    background-color: black;
+    z-index: 10;
+    position: fixed;
+    margin-left: 5em;
+    margin-top: 2em;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-family: sans-serif
+}
+
+.vid-div h1 {
+    color: white;
+}
+
+.vid-div .buttons {
+    /* background-color: white; */
+    width: 14em;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+}
+
+.vid-div .buttons .cancel {
+    background-color: red;
+    border-radius: 10px;
+    border: none;
+    font-size: 15px;
+    padding: 8px 25px;
+    color: white;
+}
+
+.vid-div .buttons .accept {
+    background-color: rgb(0, 219, 0);
+    border-radius: 10px;
+    border: none;
+    font-size: 15px;
+    padding: 8px 25px;
+    color: white;
+}
+
+.vid-div .image img{
+    height: 9em;
+    width: 9em;
+    margin-bottom: 1em;
+}
