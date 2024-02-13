@@ -2,10 +2,13 @@ import { useContext, useEffect } from "react";
 import Call from "../../../assets/call.svg"
 import Incoming from "../../../assets/incoming.svg"
 import { callContext } from "../../../context/callContext";
-import { useSocketEmit } from "../../../hooks/useSocket";
+import { socketEmit, socketOn, useSocketEmit } from "../../../hooks/useSocket";
+import { recvOffer } from "../../../webRTC/main";
 
 function VideoCall() {
-    const { setcModel, id }: any = useContext(callContext);
+    const { setcModel, id, sender }: any = useContext(callContext);
+
+    socketOn(`cancel-call:${sender}`, setcModel)
 
     useEffect(() => {
         function callHook() {
@@ -29,6 +32,7 @@ function VideoCall() {
                 <button className="cancel"
                     onClick={() => {
                         cancelAction()
+                        socketEmit('decline:offer', id)
                     }}>
                     cancel
                 </button>
@@ -38,7 +42,9 @@ function VideoCall() {
 }
 
 function IncomingCall() {
-    const { setIncoming }: any = useContext(callContext);
+    const { setIncoming, id, sender, offer }: any = useContext(callContext)
+
+    socketOn(`cancel-call:${sender}`, setIncoming)
 
     return (
         <div className="vid-div">
@@ -57,11 +63,12 @@ function IncomingCall() {
                 <button className="cancel"
                     onClick={() => {
                         setIncoming((e: any) => false);
+                        socketEmit('decline:offer', id)
                     }}>
                     decline
                 </button>
                 <button className="accept" onClick={() => {
-                    
+                    recvOffer(offer, id)
                 }}>accept</button>
             </div>
         </div>

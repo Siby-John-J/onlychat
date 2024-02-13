@@ -40,7 +40,18 @@ export class MainGateWay implements MainGateWayAbstract, OnModuleInit {
   @SubscribeMessage('send:offer')
   onnewMessage2(@MessageBody() body: any) {
     const { offer, id } = JSON.parse(body)
+    this.server.emit(id, JSON.stringify(offer))
+  }
 
-    this.server.emit(id, 'yeye body')
+  @SubscribeMessage('decline:offer')
+  cancelOffer(@MessageBody() body: any) {
+    this.server.emit(`cancel-call:${body}`, 'cut the crap')
+  }
+
+  @SubscribeMessage('send:answer')
+  acceptOffer(@MessageBody() body: any) {
+    const { id, answer } = JSON.parse(body)
+
+    this.server.emit(`send-ans:${id}`, JSON.stringify(answer))
   }
 }

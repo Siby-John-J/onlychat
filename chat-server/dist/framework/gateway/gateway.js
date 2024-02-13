@@ -31,7 +31,14 @@ let MainGateWay = class MainGateWay {
     }
     onnewMessage2(body) {
         const { offer, id } = JSON.parse(body);
-        this.server.emit(id, 'yeye body');
+        this.server.emit(id, JSON.stringify(offer));
+    }
+    cancelOffer(body) {
+        this.server.emit(`cancel-call:${body}`, 'cut the crap');
+    }
+    acceptOffer(body) {
+        const { id, answer } = JSON.parse(body);
+        this.server.emit(`send-ans:${id}`, JSON.stringify(answer));
     }
 };
 exports.MainGateWay = MainGateWay;
@@ -53,6 +60,20 @@ __decorate([
     __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", void 0)
 ], MainGateWay.prototype, "onnewMessage2", null);
+__decorate([
+    (0, websockets_1.SubscribeMessage)('decline:offer'),
+    __param(0, (0, websockets_1.MessageBody)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", void 0)
+], MainGateWay.prototype, "cancelOffer", null);
+__decorate([
+    (0, websockets_1.SubscribeMessage)('send:answer'),
+    __param(0, (0, websockets_1.MessageBody)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", void 0)
+], MainGateWay.prototype, "acceptOffer", null);
 exports.MainGateWay = MainGateWay = __decorate([
     (0, websockets_1.WebSocketGateway)({
         cors: {

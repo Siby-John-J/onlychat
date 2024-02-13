@@ -2,7 +2,7 @@ import { useSearchParams } from "react-router-dom";
 import { Socket, io } from "socket.io-client";
 import Icon from "../../assets/icon.png";
 import VideoChat from "../../assets/video-chat-icon.svg";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { useFetchUser } from "../../hooks/useFetch";
 import { userContext } from "../../context/userContext";
 import { getChats, useclearChat } from "../../hooks/useChat";
@@ -14,13 +14,15 @@ import { chatContext } from "../../context/chatContext";
 import Video from "./videoChat/Video";
 import TextChat from "./textChat/textChat";
 import Input from "./textChat/Input";
-import { useSocketOn } from "../../hooks/useSocket";
-
+import { getAnswer, useSocketOn } from "../../hooks/useSocket";
+let sender: any = undefined
 
 const socket = io("http://localhost:2000");
 
 function Chats() {
     const _input = document.getElementsByClassName("real_input")[0];
+
+    const offer = useRef()
 
     const [shift, Unshift] = useState(false);
     const [cModel, setcModel] = useState(false);
@@ -61,11 +63,12 @@ function Chats() {
             setLastname(result.lastname);
             setEmail(result.email);
             setId(result.id);
+            sender = id
 
             const _id = result.chats.map((e) => e.id);
             setChatFunc(_id);
 
-            useSocketOn(id, setIncoming)
+            useSocketOn(id, setIncoming, offer)
         }
 
         async function setChatFunc(chats: any) {
@@ -74,8 +77,6 @@ function Chats() {
         }
 
         getUser();
-
-        console.log('refreshed...', incoming)
     }, [refresh, cModel, incoming]);
 
     const handleModel = () => {
@@ -103,6 +104,8 @@ function Chats() {
             recvId: _id,
         });
     };
+
+    getAnswer(`send-ans:${sender}`)
 
     return (
         <>
@@ -180,7 +183,8 @@ function Chats() {
                                       </div>
                                   </div>
 
-                                  <callContext.Provider value={{ cModel, setcModel, incoming, setIncoming, id }}>
+                                  <callContext.Provider value={{ cModel, setcModel, incoming, 
+                                                                    setIncoming, id, sender, offer }}>
                                     {
                                         <Video />
                                     }

@@ -1,6 +1,6 @@
 
 import { useContext } from 'react'
-import { sendOffer } from '../webRTC/main'
+import { sendOffer, setRemote } from '../webRTC/main'
 import { io } from 'socket.io-client'
 import { callContext } from '../context/callContext'
 const socket = io('http://localhost:2000')
@@ -11,7 +11,6 @@ function useSocketEmit(id: string) {
   function run() {
     sendOffer()
   }
-
   run()
 }
 
@@ -24,19 +23,43 @@ export function SendOffer(prop: any) {
   prop !== null ? socket.emit('send:offer', JSON.stringify(data)) : ''
 }
 
-function useSocketOn(channel: string, setIncoming: Function) {
+export function sendAnswer(data: any, sender: string | undefined) {
+  const _data = {
+    id: sender,
+    answer: data
+  }
+
+  socket.emit('send:answer', JSON.stringify(_data))
+}
+
+export function getAnswer(channel: string) {
   socket.on(channel, (data: any) => {
+    const answer = JSON.parse(data)
+    answer.type === 'answer' ? setRemote(answer) : ''
+  })
+}
+
+function useSocketOn(channel: string, setIncoming: Function, offer: any) {
+  socket.on(channel, (data: any) => {
+    offer.current = data
     setIncoming((prev: any) => true)
   })
-  
-  return () => {
-    socket.disconnect()
-  }
-  // useEffect(() => {
-  // }, [])
+}
+
+function socketEmit(channel: string, id: any) {
+  socket.emit(channel, id)
+}
+
+function socketOn(channel: string, setcModel: Function) {
+  socket.on(channel, (data: any) => {
+    setcModel((prev: any) => false)
+    // console.log(data)
+  })
 }
 
 export {
   useSocketEmit,
-  useSocketOn
+  useSocketOn,
+  socketEmit,
+  socketOn
 }
