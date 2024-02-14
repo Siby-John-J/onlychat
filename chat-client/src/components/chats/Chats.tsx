@@ -15,6 +15,7 @@ import Video from "./videoChat/Video";
 import TextChat from "./textChat/textChat";
 import Input from "./textChat/Input";
 import { getAnswer, useSocketOn } from "../../hooks/useSocket";
+import { getUserMedia } from "../../webRTC/main";
 let sender: any = undefined
 
 const socket = io("http://localhost:2000");
@@ -28,6 +29,7 @@ function Chats() {
     const [cModel, setcModel] = useState(false);
     const [incoming, setIncoming] = useState(false);
     const [select, setSelect] = useState(false);
+    const [isopen, SetisOpen] = useState(false)
     const [currentChat, setCurrentChat]: any = useState({});
     const [text, setText] = useState("");
 
@@ -49,6 +51,9 @@ function Chats() {
     }: any = useContext(userContext);
 
     const [allChats, setAllChats] = useState([]);
+
+    const localVideoEl = useRef()
+    const localStream = useRef()
 
     socket.on("refresh", (data: boolean) => {
         setRefresh(!refresh);
@@ -84,6 +89,7 @@ function Chats() {
     };
 
     const createCall = () => {
+        // getUserMedia(localVideoEl, localStream)
         setcModel(true);
     };
 
@@ -184,7 +190,8 @@ function Chats() {
                                   </div>
 
                                   <callContext.Provider value={{ cModel, setcModel, incoming, 
-                                                                    setIncoming, id, sender, offer }}>
+                                                                    setIncoming, id, sender, offer,
+                                                                    localVideoEl, localStream }}>
                                     {
                                         <Video />
                                     }

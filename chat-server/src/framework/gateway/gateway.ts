@@ -40,6 +40,7 @@ export class MainGateWay implements MainGateWayAbstract, OnModuleInit {
   @SubscribeMessage('send:offer')
   onnewMessage2(@MessageBody() body: any) {
     const { offer, id } = JSON.parse(body)
+
     this.server.emit(id, JSON.stringify(offer))
   }
 

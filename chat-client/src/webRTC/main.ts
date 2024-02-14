@@ -1,61 +1,112 @@
 import { SendOffer, sendAnswer } from "../hooks/useSocket"
 
-const peer = new RTCPeerConnection()
+let peer : any = undefined
+let peer2 : any = undefined
 
-const channel = peer.createDataChannel('channel')
 let offer: any = undefined
 let sender: string | undefined = undefined
 
-channel.onopen = (e: any) => console.log('opened...')
-channel.onmessage = (e: any) => console.log(e, ' new message')
-
-// peer.ontrack = e => console.log('lwal niga')
-
-peer.onicecandidate = e => getOffer()
-
-peer.ondatachannel = e => {
-    peer.channel = e.channel
-    peer.channel.onmessage = e => console.log('msage....')
-}
+let localVideoEl: any = {}
+let localStream : any;
 
 function getOffer() {
     offer = peer.localDescription
     if(offer !== null && offer.type === 'offer') {
         SendOffer(offer)
-    } else if(offer !== null && offer.type === 'answer') {
+    }
+}
+
+function sendAns() {
+    offer = peer2.localDescription
+
+    if(offer !== null && offer.type === 'answer') {
         sendAnswer(offer, sender)
     }
 }
 
-function sendOffer() {
-    peer.createOffer().then(offer => {
-        peer.setLocalDescription(offer).then(e => {
-            console.log('all set')
-        })
-    })
+// Peer-1
+function createPeer() { 
+    const peer = new RTCPeerConnection()
+    const channel = peer.createDataChannel('channel')
+    
+    channel.onopen = (e: any) => console.log('opened...')
+    channel.onmessage = (e: any) => console.log('new message')
 
-    getOffer()
+    peer.onicecandidate = e => getOffer()
+
+    peer.ontrack = e => console.log('EEEEEEEEEEEe11111111')
+
+    return peer
 }
 
-function createAnswer() {
-    peer.createAnswer().then(ans => peer.setLocalDescription(ans)).then(e => 
-        console.log('created...')
-    )
+// Peer-1
+async function createOffer() {
+    peer = createPeer()
+
+    await getUserMedia('peer1')
+
+    const offer = await peer.createOffer()
+    await peer.setLocalDescription(offer)
 }
 
-function recvOffer(offer: any, id: string) {
+// peer-2
+function createPeer2() {
+    const peer = new RTCPeerConnection()
+
+    peer.ondatachannel = e => {
+        peer.channel = e.channel
+        peer.channel.onmessage = e => console.log('msage....')
+        peer.channel.onopen = (e) => {
+            console.log('connecton opened')
+        }
+    }
+
+    peer.onicecandidate = e => sendAns()
+    
+    peer.ontrack = e => console.log('EEEEEEEEEEEe22222')
+
+    return peer
+}
+
+async function createAnswer() {
+    const ans = await peer2.createAnswer()
+
+    await peer2.setLocalDescription(ans)
+}
+
+async function recvOffer(offer: any, id: string) {
+    peer2 = createPeer2()
+
+    await getUserMedia('peer2')
+
     sender = id
-    peer.setRemoteDescription(JSON.parse(offer.current)).then(e => console.log('offer set'))   
+    await peer2.setRemoteDescription(JSON.parse(offer.current))
 
     createAnswer()
 }
 
-function setRemote(answer: any) {
+async function setRemote(answer: any) {
     peer.setRemoteDescription(answer)
 }
 
+async function getUserMedia(ch: string) {
+    const stream = await navigator.mediaDevices.getUserMedia({audio: true, video: true})
+
+    localVideoEl.srcObject = stream
+    localStream = stream
+
+    localStream.getTracks().forEach((track: any) => {
+        if(ch === 'peer1') {
+            peer.addTrack(track, localStream)
+        } else if(ch === 'peer2') {
+            peer2.addTrack(track, localStream)
+        }
+    });
+}
+
 export {
-    sendOffer,
     recvOffer,
-    setRemote
+    setRemote,
+    getUserMedia,
+    createOffer
 }

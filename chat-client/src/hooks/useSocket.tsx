@@ -1,15 +1,13 @@
 
-import { useContext } from 'react'
-import { sendOffer, setRemote } from '../webRTC/main'
+import { createOffer , setRemote } from '../webRTC/main'
 import { io } from 'socket.io-client'
-import { callContext } from '../context/callContext'
 const socket = io('http://localhost:2000')
 let _id: undefined | string = undefined
 
 function useSocketEmit(id: string) {
   _id = id
   function run() {
-    sendOffer()
+    createOffer()
   }
   run()
 }
