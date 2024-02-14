@@ -1,5 +1,3 @@
-import { useContext } from "react";
-import { callContext } from "../../../context/callContext";
 
 function TextChat(prop: any) {
 

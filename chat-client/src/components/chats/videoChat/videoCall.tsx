@@ -1,12 +1,14 @@
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useRef } from "react";
 import Call from "../../../assets/call.svg"
 import Incoming from "../../../assets/incoming.svg"
 import { callContext } from "../../../context/callContext";
 import { socketEmit, socketOn, useSocketEmit } from "../../../hooks/useSocket";
 import { recvOffer } from "../../../webRTC/main";
 
+export let setisAccept: any = undefined
+
 function VideoCall() {
-    const { setcModel, id, sender }: any = useContext(callContext);
+    const { setcModel, id, sender, setIsAccept }: any = useContext(callContext);
 
     socketOn(`cancel-call:${sender}`, setcModel)
 
@@ -14,7 +16,7 @@ function VideoCall() {
         function callHook() {
             useSocketEmit(id)
         }
-
+        setisAccept = setIsAccept
         callHook()
     }, [])
 
@@ -42,7 +44,7 @@ function VideoCall() {
 }
 
 function IncomingCall() {
-    const { setIncoming, id, sender, offer }: any = useContext(callContext)
+    const { setIncoming, id, sender, offer, setIsAccept }: any = useContext(callContext)
 
     socketOn(`cancel-call:${sender}`, setIncoming)
 
@@ -67,8 +69,9 @@ function IncomingCall() {
                     }}>
                     decline
                 </button>
-                <button className="accept" onClick={() => {
-                    recvOffer(offer, id)
+                <button className="accept" onClick={async() => {
+                    await recvOffer(offer, id)
+                    setIsAccept((prev: boolean) => true)
                 }}>accept</button>
             </div>
         </div>

@@ -1,5 +1,5 @@
 import { useSearchParams } from "react-router-dom";
-import { Socket, io } from "socket.io-client";
+import { io } from "socket.io-client";
 import Icon from "../../assets/icon.png";
 import VideoChat from "../../assets/video-chat-icon.svg";
 import { useContext, useEffect, useRef, useState } from "react";
@@ -11,11 +11,11 @@ import Search from "./Search";
 import { searchContext } from "../../context/searchContext";
 import { callContext } from "../../context/callContext";
 import { chatContext } from "../../context/chatContext";
-import Video from "./videoChat/Video";
 import TextChat from "./textChat/textChat";
 import Input from "./textChat/Input";
 import { getAnswer, useSocketOn } from "../../hooks/useSocket";
 import { getUserMedia } from "../../webRTC/main";
+import VideoMain from "./videoChat/VideoMain";
 let sender: any = undefined
 
 const socket = io("http://localhost:2000");
@@ -51,9 +51,7 @@ function Chats() {
     }: any = useContext(userContext);
 
     const [allChats, setAllChats] = useState([]);
-
-    const localVideoEl = useRef()
-    const localStream = useRef()
+    const [isaccept, setIsAccept] = useState(false)
 
     socket.on("refresh", (data: boolean) => {
         setRefresh(!refresh);
@@ -191,9 +189,9 @@ function Chats() {
 
                                   <callContext.Provider value={{ cModel, setcModel, incoming, 
                                                                     setIncoming, id, sender, offer,
-                                                                    localVideoEl, localStream }}>
+                                                                    isaccept, setIsAccept}}>
                                     {
-                                        <Video />
+                                        <VideoMain />
                                     }
                                   </callContext.Provider>
                                 

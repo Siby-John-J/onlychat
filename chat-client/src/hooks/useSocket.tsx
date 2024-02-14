@@ -1,8 +1,12 @@
 
 import { createOffer , setRemote } from '../webRTC/main'
 import { io } from 'socket.io-client'
+import { setisAccept } from '../components/chats/videoChat/videoCall'
 const socket = io('http://localhost:2000')
 let _id: undefined | string = undefined
+
+let incoming: any;
+let model: any;
 
 function useSocketEmit(id: string) {
   _id = id
@@ -38,9 +42,11 @@ export function getAnswer(channel: string) {
 }
 
 function useSocketOn(channel: string, setIncoming: Function, offer: any) {
+  incoming = setIncoming
   socket.on(channel, (data: any) => {
     offer.current = data
     setIncoming((prev: any) => true)
+
   })
 }
 
@@ -49,15 +55,24 @@ function socketEmit(channel: string, id: any) {
 }
 
 function socketOn(channel: string, setcModel: Function) {
+  model = setcModel
   socket.on(channel, (data: any) => {
     setcModel((prev: any) => false)
     // console.log(data)
   })
 }
 
+function controlModel() {
+  model((prev: any) => false)
+  incoming((prev: any) => false)
+
+  setisAccept !== undefined ? setisAccept((prev: any) => true) : ''
+}
+
 export {
   useSocketEmit,
   useSocketOn,
   socketEmit,
-  socketOn
+  socketOn,
+  controlModel
 }

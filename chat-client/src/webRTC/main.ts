@@ -1,4 +1,4 @@
-import { SendOffer, sendAnswer } from "../hooks/useSocket"
+import { SendOffer, sendAnswer, controlModel } from "../hooks/useSocket"
 
 let peer : any = undefined
 let peer2 : any = undefined
@@ -7,10 +7,12 @@ let offer: any = undefined
 let sender: string | undefined = undefined
 
 let localVideoEl: any = {}
+let remoteVideoEl: any = {}
 let localStream : any;
 
 function getOffer() {
     offer = peer.localDescription
+
     if(offer !== null && offer.type === 'offer') {
         SendOffer(offer)
     }
@@ -29,12 +31,12 @@ function createPeer() {
     const peer = new RTCPeerConnection()
     const channel = peer.createDataChannel('channel')
     
-    channel.onopen = (e: any) => console.log('opened...')
+    channel.onopen = (e: any) => controlModel()
     channel.onmessage = (e: any) => console.log('new message')
 
     peer.onicecandidate = e => getOffer()
 
-    peer.ontrack = e => console.log('EEEEEEEEEEEe11111111')
+    peer.ontrack = addTracks
 
     return peer
 }
@@ -49,6 +51,12 @@ async function createOffer() {
     await peer.setLocalDescription(offer)
 }
 
+async function createAnswer() {
+    const ans = await peer2.createAnswer()
+
+    await peer2.setLocalDescription(ans)
+}
+
 // peer-2
 function createPeer2() {
     const peer = new RTCPeerConnection()
@@ -57,21 +65,14 @@ function createPeer2() {
         peer.channel = e.channel
         peer.channel.onmessage = e => console.log('msage....')
         peer.channel.onopen = (e) => {
-            console.log('connecton opened')
         }
     }
 
     peer.onicecandidate = e => sendAns()
     
-    peer.ontrack = e => console.log('EEEEEEEEEEEe22222')
+    peer.ontrack = addTracks
 
     return peer
-}
-
-async function createAnswer() {
-    const ans = await peer2.createAnswer()
-
-    await peer2.setLocalDescription(ans)
 }
 
 async function recvOffer(offer: any, id: string) {
@@ -89,10 +90,18 @@ async function setRemote(answer: any) {
     peer.setRemoteDescription(answer)
 }
 
+function addTracks(e: any) {
+    remoteVideoEl.current = {}
+    remoteVideoEl.current.srcObject = e.streams[0]
+
+    controlModel()
+}
+
 async function getUserMedia(ch: string) {
     const stream = await navigator.mediaDevices.getUserMedia({audio: true, video: true})
 
-    localVideoEl.srcObject = stream
+    localVideoEl.current = {}
+    localVideoEl.current.srcObject = stream
     localStream = stream
 
     localStream.getTracks().forEach((track: any) => {
@@ -108,5 +117,8 @@ export {
     recvOffer,
     setRemote,
     getUserMedia,
-    createOffer
+    createOffer,
+    localVideoEl,
+    localStream,
+    remoteVideoEl
 }
