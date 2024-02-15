@@ -10,11 +10,9 @@ import { User } from "../../types/setttings_types";
 import Search from "./Search";
 import { searchContext } from "../../context/searchContext";
 import { callContext } from "../../context/callContext";
-import { chatContext } from "../../context/chatContext";
 import TextChat from "./textChat/textChat";
 import Input from "./textChat/Input";
-import { getAnswer, useSocketOn } from "../../hooks/useSocket";
-import { getUserMedia } from "../../webRTC/main";
+import { getAnswer, getCancelStream, useSocketOn } from "../../hooks/useSocket";
 import VideoMain from "./videoChat/VideoMain";
 let sender: any = undefined
 
@@ -24,6 +22,8 @@ function Chats() {
     const _input = document.getElementsByClassName("real_input")[0];
 
     const offer = useRef()
+    const peer2_name = useRef({})
+    const peer1_name = useRef({})
 
     const [shift, Unshift] = useState(false);
     const [cModel, setcModel] = useState(false);
@@ -71,7 +71,7 @@ function Chats() {
             const _id = result.chats.map((e) => e.id);
             setChatFunc(_id);
 
-            useSocketOn(id, setIncoming, offer)
+            useSocketOn(id, setIncoming, offer, peer1_name)
         }
 
         async function setChatFunc(chats: any) {
@@ -86,14 +86,15 @@ function Chats() {
         Unshift(!shift);
     };
 
-    const createCall = () => {
-        // getUserMedia(localVideoEl, localStream)
+    const createCall = (name: string) => {
+        peer2_name.current = name
         setcModel(true);
     };
 
     const selectChat = (_id: any) => {
         setSelect(true);
         const filtered = allChats.filter((e) => e.id === _id);
+       
         setCurrentChat(filtered);
     };
 
@@ -110,6 +111,7 @@ function Chats() {
     };
 
     getAnswer(`send-ans:${sender}`)
+    getCancelStream(id)
 
     return (
         <>
@@ -165,7 +167,7 @@ function Chats() {
                                           alt=""
                                       />
                                       <img
-                                          onClick={createCall}
+                                          onClick={e=> {createCall(firstname)}}
                                           className="vid"
                                           src={VideoChat}
                                           alt=""
@@ -187,9 +189,9 @@ function Chats() {
                                       </div>
                                   </div>
 
-                                  <callContext.Provider value={{ cModel, setcModel, incoming, 
-                                                                    setIncoming, id, sender, offer,
-                                                                    isaccept, setIsAccept}}>
+                                  <callContext.Provider value={{ cModel, setcModel, incoming, firstname,
+                                                                    setIncoming, id, sender, offer, peer1_name,
+                                                                    isaccept, setIsAccept, peer2_name}}>
                                     {
                                         <VideoMain />
                                     }

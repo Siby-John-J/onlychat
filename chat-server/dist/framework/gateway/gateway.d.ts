@@ -11,4 +11,5 @@ export declare class MainGateWay implements MainGateWayAbstract, OnModuleInit {
     onnewMessage2(body: any): void;
     cancelOffer(body: any): void;
     acceptOffer(body: any): void;
+    cancelStream(body: any): void;
 }

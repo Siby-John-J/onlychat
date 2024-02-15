@@ -1,5 +1,4 @@
 
-
 export interface User {
     chats: object
     email: string

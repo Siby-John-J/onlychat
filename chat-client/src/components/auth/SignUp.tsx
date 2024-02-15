@@ -1,44 +1,11 @@
-import { z, ZodType } from "zod";
-import { useForm } from "react-hook-form";
 import "../../style/Login.css";
 import { useContext } from "react";
-import { useFetch } from "../../hooks/useFetch";
 import { authContext } from "../../context/authContext";
-import { zodResolver } from "@hookform/resolvers/zod";
+
+import { register, ers, handleSubmit, submit } from "../../hooks/useValidate";
 
 function SignUp() {
     const { SetisLogin }: any = useContext(authContext)
-
-    type userType = {
-        firstname: string,
-        lastname: string,
-        email: string,
-        password: string
-    }
-    
-    const Schema : ZodType<userType> = z.object({
-        firstname: z.string().min(3).max(9),
-        lastname: z.string().min(3).max(9),
-        email: z.string(),
-        password: z.string().min(3).max(14)
-    }).refine((data) => {
-        if(data.password.length <= 5) {
-            return false
-        } else {
-            return true
-        }
-    }, {
-            message: 'weak password',
-            path: ['password']
-        }
-    )
-    
-    const { register, handleSubmit, formState: {errors} } = useForm<userType>({resolver: zodResolver(Schema)})
-    
-    const submit = (data: userType) => {
-        const response = useFetch(data)
-        console.log(response)
-    }
     
     return (
         <div className="inputs">
@@ -56,20 +23,23 @@ function SignUp() {
                     </a>
                 </label>
             </div>
-            <form onSubmit={handleSubmit(submit)}>
+            <form onSubmit={
+                handleSubmit(submit)
+                // SetisLogin(true)
+            }>
                 <div className="input-session">
                     {
-                        errors.firstname && <span>
-                            {errors.firstname.message}
+                        ers.firstname && <span>
+                            {ers.firstname.message}
                         </span>
-                        || errors.lastname && <span>
-                            {errors.lastname.message}
+                        || ers.lastname && <span>
+                            {ers.lastname.message}
                         </span>
-                        || errors.email && <span>
-                            {errors.email.message}
+                        || ers.email && <span>
+                            {ers.email.message}
                          </span>
-                        || errors.password && <span>
-                            {errors.password.message}
+                        || ers.password && <span>
+                            {ers.password.message}
                         </span>
                     }
                     <div className="names">
@@ -99,7 +69,6 @@ function SignUp() {
                 <div className="btn-session">
                     <button id="cancel">cancel</button>
                     <input id="submit" type="submit" value={'submit'}  />
-                    {/* onSubmit={() => SetisLogin(true)} */}
                 </div>
             </form>
         </div>

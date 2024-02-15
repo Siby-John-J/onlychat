@@ -6,16 +6,18 @@ import { socketEmit, socketOn, useSocketEmit } from "../../../hooks/useSocket";
 import { recvOffer } from "../../../webRTC/main";
 
 export let setisAccept: any = undefined
+export let CANCEL : any = {}
 
 function VideoCall() {
-    const { setcModel, id, sender, setIsAccept }: any = useContext(callContext);
+    const { setcModel, id, sender, setIsAccept, peer2_name, firstname }: any = useContext(callContext);
 
     socketOn(`cancel-call:${sender}`, setcModel)
 
     useEffect(() => {
         function callHook() {
-            useSocketEmit(id)
+            useSocketEmit(id, firstname)
         }
+        CANCEL.can = false
         setisAccept = setIsAccept
         callHook()
     }, [])
@@ -26,7 +28,7 @@ function VideoCall() {
 
     return (
         <div className="vid-div">
-            <h1>Calling romy...</h1>
+            <h1>{`Calling ${peer2_name.current}...`}</h1>
             <div className="image">
                 <img src={Call} alt="none" />
             </div>
@@ -44,9 +46,13 @@ function VideoCall() {
 }
 
 function IncomingCall() {
-    const { setIncoming, id, sender, offer, setIsAccept }: any = useContext(callContext)
+    const { setIncoming, id, sender, offer, setIsAccept, peer1_name }: any = useContext(callContext)
 
     socketOn(`cancel-call:${sender}`, setIncoming)
+
+    useEffect(() => {
+        setisAccept = setIsAccept
+    },[])
 
     return (
         <div className="vid-div">
@@ -56,7 +62,7 @@ function IncomingCall() {
                     color: "white",
                     fontSize: "20px",
                 }}>
-                From romy
+                From {peer1_name.current}
             </label>
             <div className="image">
                 <img src={Incoming} alt="" />

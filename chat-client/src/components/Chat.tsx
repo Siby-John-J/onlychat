@@ -4,8 +4,7 @@ import SettingsIcn from '../assets/settings.svg'
 import LogOutIcn from '../assets/log-out.svg'
 import Chats from './chats/Chats'
 import Settings from './chats/Settings'
-import { useContext, useEffect, useState } from 'react'
-import { userContext } from '../context/userContext'
+import { useState } from 'react'
 
 function Chat() {
     const [navigate, changeNaviate] = useState('')

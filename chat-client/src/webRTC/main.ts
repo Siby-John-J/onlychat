@@ -1,7 +1,7 @@
 import { SendOffer, sendAnswer, controlModel } from "../hooks/useSocket"
 
-let peer : any = undefined
-let peer2 : any = undefined
+export let peer : any = undefined
+export let peer2 : any = undefined
 
 let offer: any = undefined
 let sender: string | undefined = undefined
@@ -111,6 +111,16 @@ async function getUserMedia(ch: string) {
             peer2.addTrack(track, localStream)
         }
     });
+
+    if(ch === 'cancel') {
+        stream.getTracks().forEach((track: any) => {
+            track.stop()
+        })
+    }
+}
+
+export async function cleanStream() {
+    await getUserMedia('cancel')
 }
 
 export {

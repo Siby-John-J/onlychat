@@ -1,6 +1,6 @@
 import axios from "axios"
 
-export async function useFetch(data: object) {
+export async function useFetchCreate(data: object) {
     const response = await axios.post('http://localhost:2000/user/create', data)
     
     return response
@@ -23,5 +23,5 @@ export async function useFetchUser(data: string) {
 export async function userEditFetch(data: object) {
     const response = await axios.patch('http://localhost:2000/user/edit', data)
 
-    // console.log(data)
+    return response.data
 }
